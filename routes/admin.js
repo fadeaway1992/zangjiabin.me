@@ -4,7 +4,7 @@ var path = require('path')
 
 /* GET admin listing. */
 router.get('/', function(req, res, next) {
-  res.sendFile(path.join(__dirname, '../pages/login/login.html'));
+  res.sendFile(path.join(__dirname, '../admin/dist/index.html'));
 });
 
 module.exports = router;

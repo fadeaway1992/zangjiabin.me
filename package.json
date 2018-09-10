@@ -8,9 +8,14 @@
   "dependencies": {
     "cookie-parser": "~1.4.3",
     "debug": "~2.6.9",
+    "element-ui": "^2.4.6",
     "express": "~4.16.0",
     "http-errors": "~1.6.2",
     "morgan": "~1.9.0",
-    "pug": "2.0.0-beta11"
+    "pug": "2.0.0-beta11",
+    "vue": "^2.5.17"
+  },
+  "devDependencies": {
+    "webpack": "^4.17.2"
   }
 }
