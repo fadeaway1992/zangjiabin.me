@@ -3,7 +3,6 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
-console.log('restart')
 var indexRouter = require('./routes/index');
 var adminRouter = require('./routes/admin');
 
@@ -18,6 +17,8 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 
+
+// 分配路由
 app.use('/', indexRouter);
 app.use('/admin', adminRouter);
 
