@@ -1,6 +1,6 @@
 {
   "verbose": true,
-  "ignore": ["node_modules/*"],
-  "watch": ["*.*", "*"],
+  "ignore": ["node_modules/*", "data/*"],
+  "watch": ".",
   "ext": "js, css, html, pug, json"
 }

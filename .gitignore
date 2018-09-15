@@ -1,5 +1,5 @@
 package-lock.json
 node_modules
 npm-debug.log
-admin/dist/**
-admin/dist/index.html
+admin/dist
+data
