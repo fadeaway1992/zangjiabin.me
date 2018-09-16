@@ -8,7 +8,6 @@ var adminRouter = require('./routes/admin');
 var bodyParser = require('body-parser')
 var APIs = require('./api/index')
 
-var mongo = require('mongodb');
 var monk = require('monk');
 var db = monk('localhost:27017/myapp');
 
