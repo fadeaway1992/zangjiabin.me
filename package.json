@@ -4,8 +4,8 @@
   "private": true,
   "scripts": {
     "start": "nodemon  --watch . ./bin/www",
-    "dev": "webpack-dev-server --inline --progress --config admin/build/webpack.dev.conf.js",
-    "build": "node admin/build/build.js"
+    "dev": "webpack-dev-server --inline --progress --config spa/build/webpack.dev.conf.js",
+    "build": "node spa/build/build.js"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",

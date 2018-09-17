@@ -6,7 +6,7 @@ var session = require('express-session')
 var FileStore = require('session-file-store')(session);
 var logger = require('morgan');
 var indexRouter = require('./routes/index');
-var adminRouter = require('./routes/admin');
+var postsRouter = require('./routes/post');
 var bodyParser = require('body-parser')
 var APIs = require('./api/index')
 
@@ -36,12 +36,12 @@ app.use(session({
   saveUninitialized: true,
   cookie: { secure: false }
 }))
-app.use('/static', express.static(path.join(__dirname, 'admin/dist/static')))
+app.use('/static', express.static(path.join(__dirname, 'spa/dist/static')))
 
 
 // 分配路由
 app.use('/', indexRouter);
-app.use('/admin', adminRouter);
+app.use('/posts', postsRouter);
 
 // api
 app.use('/api/v1', APIs)

@@ -1,10 +1,9 @@
 var express = require('express');
 var router = express.Router();
+var path = require('path')
 
-/* GET home page. */
-router.get('/', function(req, res, next) {
-  console.log(req.session.user.name, 'session')
-  res.render('index', { title: req.session.user.name });
+router.get(/.*/, function(req, res, next) {
+  res.sendFile(path.join(__dirname, '../spa/dist/index.html'));
 });
 
 module.exports = router;
