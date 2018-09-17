@@ -20,6 +20,11 @@ router.post('/login', upload.none(), function (req, res, next) {
         if(!validation) {
           res.send('密码错误')
         } else {
+          req.session.user = {
+            name: username
+          }
+          console.log(req.session, 'session')
+          console.log(res.cookie)
           res.send('登录成功')
         }
       }
