@@ -40,11 +40,13 @@ app.use('/static', express.static(path.join(__dirname, 'spa/dist/static')))
 
 
 // 分配路由
-app.use('/', indexRouter);
+// 文章列表
 app.use('/posts', postsRouter);
-
 // api
 app.use('/api/v1', APIs)
+// spa
+app.use('/', indexRouter);
+
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

@@ -1,5 +1,6 @@
 package-lock.json
 node_modules
 npm-debug.log
-admin/dist
+spa/dist
 data
+sessions
