@@ -15,6 +15,19 @@ var db = monk('localhost:27017/myapp');
 
 var app = express();
 
+// Add headers
+app.use(function (req, res, next) {
+
+  // Website you wish to allow to connect
+  res.setHeader('Access-Control-Allow-Origin', 'http://localhost:8080');
+
+  // Request headers you wish to allow
+  res.setHeader('Access-Control-Allow-Headers', 'content-type');
+
+  // Pass to next layer of middleware
+  next();
+});
+
 // Make our db accessible to our router
 app.use(function(req,res,next){
   req.db = db;

@@ -11,20 +11,18 @@ router.post('/login', upload.none(), function (req, res, next) {
   var password = req.body.password
   db.collection('userscollection').find({"role": "admin", "username": username}, {_id: 0, role: 0}, function(err, cursor){
     if (err) {
-      res.send('500 error')
+      res.sendStatus(500)
     } else {
       if (!cursor.length) {
-        res.send('用户名不存在')
+        res.status(422).json({error: {code: '001', message: '用户名不存在'}})
       } else {
         var validation = bcrypt.compareSync(password, cursor[0].password); // 验证密码
         if(!validation) {
-          res.send('密码错误')
+          res.status(422).json({error: {code: '002', message: '密码错误'}})
         } else {
           req.session.user = {
             name: username
           }
-          console.log(req.session, 'session')
-          console.log(res.cookie)
           res.send('登录成功')
         }
       }
