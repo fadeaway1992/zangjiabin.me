@@ -1,7 +1,8 @@
 import VueRouter from 'vue-router'
 import Dashboard from '../pages/Dashboard.vue'
 import Login from '../pages/Login.vue'
-import NotFound from '../pages/NotFound'
+import NotFound from '../pages/NotFound.vue'
+import Edit from '../pages/Edit.vue'
 
 const routes = [
   {
@@ -11,6 +12,10 @@ const routes = [
   {
     path: '/login',
     component: Login
+  },
+  {
+    path: '/edit',
+    component: Edit
   },
   {
     path: '*',

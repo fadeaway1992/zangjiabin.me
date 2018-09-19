@@ -12,6 +12,7 @@
 
 <script>
   import {postLogin} from '@/http/session.js'
+  import Cookies from 'js-cookie'
   export default {
     name: 'Login',
     data () {

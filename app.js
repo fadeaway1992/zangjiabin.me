@@ -2,8 +2,6 @@ var createError = require('http-errors');
 var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
-var session = require('express-session')
-var FileStore = require('session-file-store')(session);
 var logger = require('morgan');
 var indexRouter = require('./routes/index');
 var postsRouter = require('./routes/post');
@@ -13,16 +11,23 @@ var APIs = require('./api/index')
 var monk = require('monk');
 var db = monk('localhost:27017/myapp');
 
+var mongoose = require('mongoose')
+mongoose.connect('mongodb://127.0.0.1:27017/myapp')
+
 var app = express();
 
 // Add headers
 app.use(function (req, res, next) {
 
+  res.setHeader('Access-Control-Expose-Headers', '*');
+
+  res.setHeader('Access-Control-Allow-Credentials', true);
+
   // Website you wish to allow to connect
   res.setHeader('Access-Control-Allow-Origin', 'http://localhost:8080');
 
   // Request headers you wish to allow
-  res.setHeader('Access-Control-Allow-Headers', 'content-type');
+  res.setHeader('Access-Control-Allow-Headers', 'withCredentials, content-type');
 
   // Pass to next layer of middleware
   next();
@@ -42,13 +47,6 @@ app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(session({
-  secret: 'keyboard cat',
-  store: new FileStore(),
-  resave: false,
-  saveUninitialized: true,
-  cookie: { secure: false }
-}))
 app.use('/static', express.static(path.join(__dirname, 'spa/dist/static')))
 
 

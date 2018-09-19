@@ -1,5 +1,5 @@
 import {axios} from './request.js'
-import {POST__LOGIN} from './url.js'
+import {POST__LOGIN, GET__LOGIN_STATUS} from './url.js'
 
 export function postLogin ({username, password}) {
   return axios({
@@ -9,5 +9,11 @@ export function postLogin ({username, password}) {
       username,
       password
     }
+  })
+}
+
+export function getLoginStatus () {
+  return axios({
+    url: GET__LOGIN_STATUS
   })
 }
