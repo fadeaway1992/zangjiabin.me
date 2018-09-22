@@ -26,6 +26,7 @@
     "pug": "2.0.0-beta11",
     "sass-loader": "^7.1.0",
     "session-file-store": "^1.2.0",
+    "uuid": "^3.3.2",
     "vue": "^2.5.17",
     "vue-router": "^3.0.1",
     "vue-style-loader": "^3.1.2"

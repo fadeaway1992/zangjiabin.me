@@ -27,7 +27,7 @@ app.use(function (req, res, next) {
   res.setHeader('Access-Control-Allow-Origin', 'http://localhost:8080');
 
   // Request headers you wish to allow
-  res.setHeader('Access-Control-Allow-Headers', 'withCredentials, content-type');
+  res.setHeader('Access-Control-Allow-Headers', 'withCredentials, content-type, token');
 
   // Pass to next layer of middleware
   next();

@@ -31,7 +31,9 @@
         const username = this.username
         const password = this.password
         postLogin({username, password}).then((res) => {
-          console.log('登录成功')
+          const token = res.data.token
+          localStorage.token = token
+          this.$router.go('/')
         }).catch((err) => {
           if (err.response) {
             const error = err.response.data.error

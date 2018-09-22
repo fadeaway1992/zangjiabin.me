@@ -8,10 +8,20 @@ db.on('error', console.error.bind(console, 'connection error:'))
 db.once('open', function() {
   const Schema = mongoose.Schema
 
+  // User
   const UserSchema = new Schema({
-    username: String,
-    password: String,
-    role: String
+    username: {
+      type: String,
+      unique: true,
+      required: true
+    },
+    password: {
+      type: String,
+      required: true
+    },
+    role: {
+      type: String
+    }
   })
 
   const UserModel = mongoose.model('User', UserSchema)
@@ -25,4 +35,50 @@ db.once('open', function() {
       console.log(doc)
     }
   })
+
+  // Session
+  const SessionSchema = new Schema({
+    username: {
+      type: String,
+      unique: true,
+      required: true
+    },
+    access_token: {
+      type: String,
+      unique: true,
+      required: true
+    },
+    expiry: {
+      type: Date,
+      required: true
+    }
+  })
+
+  const SessionModel = mongoose.model('Session', SessionSchema)
+
+  // Post
+  const PostSchema = new Schema({
+    author: {
+      type: String,
+      required: true,
+      index: true
+    },
+    postDate: {
+      type: Date,
+      required: true
+    },
+    lastModified: {
+      type: Date
+    },
+    title: {
+      type: String,
+      required: true
+    },
+    body: {
+      type: String,
+      required: true
+    }
+  })
+
+  const PostModel = mongoose.model('Post', PostSchema)
 })

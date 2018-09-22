@@ -8,11 +8,16 @@
 import { getLoginStatus } from '@/http/session.js'
 export default {
   name: 'Edit',
-  created () {
+  beforeRouteEnter (to, from, next) {
     getLoginStatus().then((res) => {
-      console.log(res)
+      if (res.data.user.role === 'admin') {
+        next()
+      } else {
+        next('/')
+      }
     }).catch((err) => {
       console.dir(err)
+      next('/')
     })
   }
 }
