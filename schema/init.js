@@ -58,10 +58,14 @@ db.once('open', function() {
 
   // Post
   const PostSchema = new Schema({
-    author: {
+    id: {
       type: String,
       required: true,
-      index: true
+      unique: true
+    },
+    author: {
+      type: String,
+      required: true
     },
     postDate: {
       type: Date,
