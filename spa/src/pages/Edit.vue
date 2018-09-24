@@ -1,13 +1,36 @@
 <template>
   <div class="edit-page page-container">
-    编辑页面
+    <h2 class="page-header">编辑页面</h2>
+    <div class="title-container">
+      <input type="text" class="title" v-model="title" placeholder="请输入标题">
+    </div>
+    <div class="flex-row-between edit-container">
+      <textarea class="editor" v-model="sourceCode"></textarea>
+      <div class="preview" v-html="htmlCode"></div>
+    </div>
+    <div class="submit-container flex-row-right">
+      <button class="submit" @click="post">发布</button>
+    </div>
   </div>
 </template>
 
 <script>
 import { getLoginStatus } from '@/http/session.js'
+import { postBlog } from '@/http/blog.js'
+import {markdown} from 'markdown'
 export default {
   name: 'Edit',
+  data () {
+    return {
+      sourceCode: '',
+      title: ''
+    }
+  },
+  computed: {
+    htmlCode () {
+      return markdown.toHTML(this.sourceCode)
+    }
+  },
   beforeRouteEnter (to, from, next) {
     getLoginStatus().then((res) => {
       if (res.data.user.role === 'admin') {
@@ -19,11 +42,64 @@ export default {
       console.dir(err)
       next('/')
     })
+  },
+  methods: {
+    post () {
+      const blankRegExp = /^\s*$/g
+      if (blankRegExp.test(this.title)) {
+        window.alert('请输入标题')
+      } else if (blankRegExp.test(this.sourceCode)) {
+        window.alert('请输入内容')
+      } else {
+        postBlog({title: this.title, content: this.sourceCode}).then((res) => {
+          console.log(res, 'res')
+        }).catch((err) => {
+          if (err.response && err.response.data.error) {
+            window.alert(error.message)
+          }
+        })
+      }
+    }
   }
 }
 </script>
 
 <style lang="scss">
+.edit-page.page-container {
+  width: 960px;
+  margin: 0 auto;
+  margin-top: 20px;
+  h2.page-header {
+    text-align: center;
+  }
+  .title-container {
+    padding: 15px;
+    .title {
+      font-size: 22px;
+      width: 300px;
+    }
+  }
+  .edit-container {
+    margin-top: 20px;
+    padding: 15px;
+    textarea.editor {
+      width: 450px;
+      height: 600px;
+      resize: none;
+    }
+    div.preview {
+      width: 450px;
+      height: 600px;
+    }
+  }
+  .submit-container {
+    margin: 15px 0 30px;
+    .submit {
+      padding: 0 5px;
+      font-size: 20px;
+    }
+  }
+}
 
 </style>
 

@@ -9,6 +9,8 @@ Vue.use(VueRouter)
 
 Vue.config.productionTip = false
 
+import '@/style/reset.css'
+
 /* eslint-disable no-new */
 new Vue({
   el: '#app',

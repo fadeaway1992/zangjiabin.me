@@ -1,0 +1,25 @@
+html, body, h1, h2, h3, h4, h5, h6 {
+  margin: 0;
+}
+
+.flex-row-between {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.flex-row-right {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+}
+
+input, button, textarea {
+  outline: none;
+}
+
+button {
+  /* border: none; */
+  background: none;
+  padding: 0;
+}

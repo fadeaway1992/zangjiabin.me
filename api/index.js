@@ -35,7 +35,6 @@ router.post('/login', upload.none(), function (req, res, next) {
           } else {
             sessions.remove({username}).then(() => {
               sessions.insert(newSession).then((cursor) => {
-                console.log(cursor, 'cursor')
                 finalAction()
               }).catch((err) => {
                 console.log(err)
@@ -71,6 +70,37 @@ router.get('/login_status', function (req, res) {
         } else {
           res.json({logged: true, user: user})
         }
+      }
+    })
+  }
+})
+
+// Post a blog
+router.post('/post', function (req, res) {
+  const token = req.headers.token
+  const db = req.db
+  if (!token) {
+    return res.status(401).json({error: {code: '401', message: '没有权限'}}) // 没有 token
+  } else {
+    db.get('sessions').find({access_token: token}).then((cursor) => {
+      if (!cursor.length) {
+        return res.status(401).json({error: {code: '401', message: '没有权限'}}) // 数据库中找不到该 token
+      }
+      const session = cursor[0]
+      if (session.role !== 'admin') {
+        return res.status(401).json({error: {code: '401', message: '没有权限'}}) // 该 会话 非管理员
+      } else if (session.expiry.getTime() < new Date().getTime()) {
+        return res.status(401).json({error: {code: '401', message: '没有权限'}}) // token 已经过期
+      } else {
+        const newPost = {
+          author: session.username,
+          postDate: new Date(),
+          title: req.body.title,
+          body: req.body.content
+        }
+        db.get('posts').insert(newPost).then((cursor) => {
+          return res.json(cursor)
+        })
       }
     })
   }
