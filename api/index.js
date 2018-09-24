@@ -3,6 +3,7 @@ var router = express.Router()
 var bcrypt = require('bcryptjs')
 var multer  = require('multer')
 var upload = multer()
+const uuidv1 = require('uuid/v1')
 
 var generateNewSession = require('../utils/utils.js').generateNewSession
 
@@ -93,6 +94,7 @@ router.post('/post', function (req, res) {
         return res.status(401).json({error: {code: '401', message: '没有权限'}}) // token 已经过期
       } else {
         const newPost = {
+          id: uuidv1(),
           author: session.username,
           postDate: new Date(),
           title: req.body.title,
