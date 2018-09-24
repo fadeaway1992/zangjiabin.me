@@ -4,7 +4,7 @@ var router = express.Router()
 router.get('/:post_id', function(req, res) {
   const postId = req.params.post_id
   const db = req.db
-  db.get('posts').find({_id: postId}).then((cursor) => {
+  db.get('posts').find({id: postId}).then((cursor) => {
     if (!cursor.length) {
       res.render('error', { message: '文章不存在', error: { status: 404} })
     } else {
