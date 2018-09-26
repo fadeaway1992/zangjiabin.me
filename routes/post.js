@@ -5,7 +5,7 @@ var markdown = require('markdown').markdown
 router.get('/:post_id', function(req, res) {
   const postId = req.params.post_id
   const db = req.db
-  db.get('posts').find({id: postId}).then((cursor) => {
+  db.get('posts').find({id: postId}, {_id: 0}).then((cursor) => {
     if (!cursor.length) {
       res.render('error', { message: '文章不存在', error: { status: 404} })
     } else {
@@ -13,6 +13,9 @@ router.get('/:post_id', function(req, res) {
       const token = req.headers.token
       post.html = markdown.toHTML(post.body)
       post.postDate = post.postDate.toLocaleString()
+      if (post.lastModified) {
+        post.lastModified = post.lastModified.toLocaleString()
+      }
       if (token) {
         db.get('sessions').find({access_token: token}).then((cursor) => {
           if (cursor.length) {

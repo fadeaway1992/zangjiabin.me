@@ -24,7 +24,9 @@ app.use(function (req, res, next) {
   res.setHeader('Access-Control-Allow-Credentials', true);
 
   // Website you wish to allow to connect
-  res.setHeader('Access-Control-Allow-Origin', 'http://localhost:8080');
+  res.setHeader('Access-Control-Allow-Origin', 'http://localhost:8080')
+
+  res.setHeader('Access-Control-Allow-Methods', '*')
 
   // Request headers you wish to allow
   res.setHeader('Access-Control-Allow-Headers', 'withCredentials, content-type, token');

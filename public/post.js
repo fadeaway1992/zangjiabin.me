@@ -9,7 +9,7 @@ window.onload = function () {
     })
   }
   checkLoginStatus().then((res) => {
-    if (res.data.user.role === 'admin') {
+    if (res.data.user && res.data.user.role === 'admin') {
       document.querySelector('.operation').style.display = 'block'
       const buttonRemove = document.querySelector('.remove')
       const removePost = function () {

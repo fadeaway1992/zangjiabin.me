@@ -16,8 +16,8 @@
 
 <script>
 import { getLoginStatus } from '@/http/session.js'
-import { postBlog } from '@/http/blog.js'
-import {markdown} from 'markdown'
+import { postBlog, getBlogDetail, updateOneBlog } from '@/http/blog.js'
+import { markdown } from 'markdown'
 export default {
   name: 'Edit',
   data () {
@@ -43,6 +43,25 @@ export default {
       next('/')
     })
   },
+  created () {
+    if (this.$route.params && this.$route.params.post_id) {
+      this.isUpdate = true // 更新一篇文章
+      const postId = this.$route.params.post_id
+      getBlogDetail({postId}).then((res) => {
+        console.log(res.data)
+        this.sourceCode = res.data.body
+        this.title = res.data.title
+      }).catch((err) => {
+        if (err.response && err.response.data.error) {
+          const error = err.response.data.error
+          console.log(error)
+          if (error.code === 404) {
+            this.$router.replace('/')
+          }
+        }
+      })
+    }
+  },
   methods: {
     post () {
       const blankRegExp = /^\s*$/g
@@ -51,13 +70,25 @@ export default {
       } else if (blankRegExp.test(this.sourceCode)) {
         window.alert('请输入内容')
       } else {
-        postBlog({title: this.title, content: this.sourceCode}).then((res) => {
-          console.log(res, 'res')
-        }).catch((err) => {
-          if (err.response && err.response.data.error) {
-            window.alert(error.message)
-          }
-        })
+        if (this.isUpdate) { // 更新
+          updateOneBlog({postId: this.$route.params.post_id, title: this.title, content: this.sourceCode}).then((res) => {
+            console.log(res, 'res')
+          }).catch((err) => {
+            if (err.response && err.response.data.error) {
+              const error = err.response.data.error
+              window.alert(error.message)
+            }
+          })
+        } else { // 发布
+          postBlog({title: this.title, content: this.sourceCode}).then((res) => {
+            console.log(res, 'res')
+          }).catch((err) => {
+            if (err.response && err.response.data.error) {
+              const error = err.response.data.error
+              window.alert(error.message)
+            }
+          })
+        }
       }
     }
   }

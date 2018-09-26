@@ -18,6 +18,10 @@ const routes = [
     component: Edit
   },
   {
+    path: '/edit/:post_id',
+    component: Edit
+  },
+  {
     path: '*',
     component: NotFound
   }

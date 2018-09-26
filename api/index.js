@@ -108,6 +108,51 @@ router.post('/post', function (req, res) {
   }
 })
 
+router.get('/post/:postId', function (req, res) {
+  const db = req.db
+  const postId = req.params.postId
+  db.get('posts').find({id: postId}, {_id: 0}).then((cursor) => {
+    if (!cursor.length) {
+      return res.status(404).json({error: {code: '404', message: '该文章不存在'}}) // 文章不存在
+    } else {
+      const post = cursor[0]
+      return res.json(post)
+    }
+  })
+})
+
+router.put('/post/:postId', function(req, res) {
+  const token = req.headers.token
+  const db = req.db
+  const postId = req.params.postId
+  if (!token) {
+    return res.status(401).json({error: {code: '401', message: '没有权限'}}) // 没有 token
+  } else {
+    db.get('sessions').find({access_token: token}).then((cursor) => {
+      if (!cursor.length) {
+        return res.status(401).json({error: {code: '401', message: '没有权限'}}) // 数据库中找不到该 token
+      }
+      const session = cursor[0]
+      if (session.role !== 'admin') {
+        return res.status(401).json({error: {code: '401', message: '没有权限'}}) // 该 会话 非管理员
+      } else if (session.expiry.getTime() < new Date().getTime()) {
+        return res.status(401).json({error: {code: '401', message: '没有权限'}}) // token 已经过期
+      } else { // token 有效
+        db.get('posts').find({id: postId}).then((cursor) => {
+          if (!cursor.length) {
+            return res.status(404).json({error: {code: '404', message: '该文章不存在'}}) // 文章不存在
+          } else {
+            req.body.lastModified = new Date()
+            db.get('posts').update({id: postId}, {$set: req.body}).then((cursor) => {
+              return res.send('更新成功')
+            })
+          }
+        })
+      }
+    })
+  }
+})
+
 router.delete('/post/:postId', function(req, res) {
   const token = req.headers.token
   const db = req.db
