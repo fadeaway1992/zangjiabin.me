@@ -108,4 +108,35 @@ router.post('/post', function (req, res) {
   }
 })
 
+router.delete('/post/:postId', function(req, res) {
+  const token = req.headers.token
+  const db = req.db
+  const postId = req.params.postId
+  if (!token) {
+    return res.status(401).json({error: {code: '401', message: '没有权限'}}) // 没有 token
+  } else {
+    db.get('sessions').find({access_token: token}).then((cursor) => {
+      if (!cursor.length) {
+        return res.status(401).json({error: {code: '401', message: '没有权限'}}) // 数据库中找不到该 token
+      }
+      const session = cursor[0]
+      if (session.role !== 'admin') {
+        return res.status(401).json({error: {code: '401', message: '没有权限'}}) // 该 会话 非管理员
+      } else if (session.expiry.getTime() < new Date().getTime()) {
+        return res.status(401).json({error: {code: '401', message: '没有权限'}}) // token 已经过期
+      } else { // token 有效
+        db.get('posts').find({id: postId}).then((cursor) => {
+          if (!cursor.length) {
+            return res.status(404).json({error: {code: '404', message: '该文章不存在'}}) // 文章不存在
+          } else {
+            db.get('posts').remove({id: postId}).then((cursor) => {
+              return res.send('删除成功')
+            })
+          }
+        })
+      }
+    })
+  }
+})
+
 module.exports = router

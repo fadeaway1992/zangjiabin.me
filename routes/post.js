@@ -1,5 +1,6 @@
 var express = require('express')
 var router = express.Router()
+var markdown = require('markdown').markdown
 
 router.get('/:post_id', function(req, res) {
   const postId = req.params.post_id
@@ -8,7 +9,22 @@ router.get('/:post_id', function(req, res) {
     if (!cursor.length) {
       res.render('error', { message: '文章不存在', error: { status: 404} })
     } else {
-      res.render('index', { title: '臧甲彬的博客' })
+      const post = cursor[0]
+      const token = req.headers.token
+      post.html = markdown.toHTML(post.body)
+      post.postDate = post.postDate.toLocaleString()
+      if (token) {
+        db.get('sessions').find({access_token: token}).then((cursor) => {
+          if (cursor.length) {
+            const user = cursor[0]
+            if (user.role === 'admin') {
+              post.admin = true
+              return res.render('index', post)
+            }
+          }
+        })
+      }
+      res.render('index', post)
     }
   })
 });

@@ -48,6 +48,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use('/static', express.static(path.join(__dirname, 'spa/dist/static')))
+app.use('/public', express.static(path.join(__dirname, 'public')))
 
 
 // 分配路由

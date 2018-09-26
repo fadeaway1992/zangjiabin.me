@@ -2,4 +2,8 @@ extends layout
 
 block content
   h1= title
-  p Welcome to #{title}
+  p #{author} 发布于 #{postDate}
+  div!= html
+  div(class='operation hidden')
+    button(class='remove') 删除
+    a(href='/edit/' + id) 编辑

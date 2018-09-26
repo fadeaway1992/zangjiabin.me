@@ -2,6 +2,10 @@ doctype html
 html
   head
     title= title
-    link(rel='stylesheet', href='/stylesheets/style.css')
+    link(rel='stylesheet', href='/public/post.css')
+    script(src='/public/axios.min.js')
+    script.
+      window.postId = "#{id}"
   body
     block content
+    script(src='/public/post.js')
