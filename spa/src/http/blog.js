@@ -1,5 +1,5 @@
 import {axios} from './request.js'
-import {POST__BLOG, GET__BLOG_DETAIL__FUNC, PUT__BLOG_DETAIL__FUNC} from './url.js'
+import {POST__BLOG, GET__BLOG, GET__BLOG_DETAIL__FUNC, PUT__BLOG_DETAIL__FUNC} from './url.js'
 
 export function postBlog ({title, content}) {
   return axios({
@@ -8,6 +8,15 @@ export function postBlog ({title, content}) {
     data: {
       title,
       content
+    }
+  })
+}
+
+export function getBlogs ({page}) {
+  return axios({
+    url: GET__BLOG,
+    params: {
+      page
     }
   })
 }

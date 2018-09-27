@@ -76,6 +76,19 @@ router.get('/login_status', function (req, res) {
   }
 })
 
+router.get('/post', function (req, res) {
+  const page = req.query.page || 1
+  const perPage = 10
+  const db = req.db
+  db.get('posts').find({},{skip: perPage * (page - 1), limit: perPage, sort: {_id: -1}}).then((cursor) => {
+    const result = {
+      page: page,
+      posts: cursor
+    }
+    return res.send(result)
+  })
+})
+
 // Post a blog
 router.post('/post', function (req, res) {
   const token = req.headers.token
