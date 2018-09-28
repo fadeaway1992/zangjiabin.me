@@ -2,17 +2,47 @@ var express = require('express')
 var router = express.Router()
 var bcrypt = require('bcryptjs')
 var multer  = require('multer')
-var upload = multer({ dest: '../public/' })
+var path = require('path')
 const uuidv1 = require('uuid/v1')
+var storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, path.join(__dirname, '../public/images'))
+  },
+  filename: function (req, file, cb) {
+    const nameArray = file.originalname.split('.')
+    const extName = '.' + nameArray[nameArray.length - 1]
+    cb(null, uuidv1() + extName)
+  }
+})
+var upload = multer({ storage: storage })
 
 var generateNewSession = require('../utils/utils.js').generateNewSession
 
 // upload images
 router.post('/upload_images', upload.any(), function (req, res) {
-  console.log(req.body, 'body')
-  console.log(req.file, 'file')
-  console.log(req.files, 'files')
-  res.status(200).end()
+  const token = req.headers.token
+  const db = req.db
+  if (!token) {
+    return res.status(401).json({error: {code: '401', message: '没有权限'}}) // 没有 token
+  } else {
+    db.get('sessions').find({access_token: token}).then((cursor) => {
+      if (!cursor.length) {
+        return res.status(401).json({error: {code: '401', message: '没有权限'}}) // 数据库中找不到该 token
+      }
+      const session = cursor[0]
+      if (session.role !== 'admin') {
+        return res.status(401).json({error: {code: '401', message: '没有权限'}}) // 该 会话 非管理员
+      } else if (session.expiry.getTime() < new Date().getTime()) {
+        return res.status(401).json({error: {code: '401', message: '没有权限'}}) // token 已经过期
+      } else {
+        const files = req.files
+        let paths = files.map(function (file) {
+          return '/public/images/' + file.filename
+        })
+        return res.json(paths)
+      }
+    })
+  }
 })
 
 // log in

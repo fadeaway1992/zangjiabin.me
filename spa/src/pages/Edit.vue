@@ -9,10 +9,10 @@
       <div class="preview" v-html="htmlCode"></div>
     </div>
     <div class="upload">
-      <form action="http://localhost:3000/api/v1/upload_images" method="post" enctype="multipart/form-data">
-        <input type="file" multiple name="images" @change="uploadImages">
-        <input type="submit" value="upload">
-      </form>
+      <input type="file" multiple name="images" accept="image/jpeg, image/png, image/jpg, image/gif" @change="uploadImages">
+      <div>
+        <p v-for="path in imagePaths" :key="path">{{path}}</p>
+      </div>
     </div>
     <div class="submit-container flex-row-right">
       <button class="submit" @click="post">发布</button>
@@ -31,7 +31,8 @@ export default {
   data () {
     return {
       sourceCode: '',
-      title: ''
+      title: '',
+      imagePaths: []
     }
   },
   computed: {
@@ -100,10 +101,16 @@ export default {
       }
     },
     uploadImages (ev) {
-      const images = ev.target.files
-      let formData = new FormData()
-      formData.append('images', images)
-      axios.post('http://localhost:3000/api/v1/upload_images', formData, {headers: {'Content-Type': 'multipart/form-data'}})
+      const files = ev.target.files
+      const formData = new FormData()
+      for (let i = 0; i < files.length; i++) {
+        formData.append('image' + i, files[i])
+      }
+      uploadImages(formData).then(res => {
+        this.imagePaths = res.data
+      }).catch(err => {
+        console.dir(err)
+      })
     }
   }
 }
