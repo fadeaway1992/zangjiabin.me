@@ -33,7 +33,7 @@
         postLogin({username, password}).then((res) => {
           const token = res.data.token
           localStorage.token = token
-          this.$router.go('/')
+          this.$router.push('/')
         }).catch((err) => {
           if (err.response) {
             const error = err.response.data.error

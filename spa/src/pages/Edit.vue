@@ -8,6 +8,12 @@
       <textarea class="editor" v-model="sourceCode"></textarea>
       <div class="preview" v-html="htmlCode"></div>
     </div>
+    <div class="upload">
+      <form action="http://localhost:3000/api/v1/upload_images" method="post" enctype="multipart/form-data">
+        <input type="file" multiple name="images" @change="uploadImages">
+        <input type="submit" value="upload">
+      </form>
+    </div>
     <div class="submit-container flex-row-right">
       <button class="submit" @click="post">发布</button>
     </div>
@@ -17,7 +23,9 @@
 <script>
 import { getLoginStatus } from '@/http/session.js'
 import { postBlog, getBlogDetail, updateOneBlog } from '@/http/blog.js'
+import { uploadImages } from '@/http/upload.js'
 import { markdown } from 'markdown'
+import axios from 'axios'
 export default {
   name: 'Edit',
   data () {
@@ -90,6 +98,12 @@ export default {
           })
         }
       }
+    },
+    uploadImages (ev) {
+      const images = ev.target.files
+      let formData = new FormData()
+      formData.append('images', images)
+      axios.post('http://localhost:3000/api/v1/upload_images', formData, {headers: {'Content-Type': 'multipart/form-data'}})
     }
   }
 }

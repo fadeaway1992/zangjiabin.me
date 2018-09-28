@@ -2,13 +2,21 @@ var express = require('express')
 var router = express.Router()
 var bcrypt = require('bcryptjs')
 var multer  = require('multer')
-var upload = multer()
+var upload = multer({ dest: '../public/' })
 const uuidv1 = require('uuid/v1')
 
 var generateNewSession = require('../utils/utils.js').generateNewSession
 
+// upload images
+router.post('/upload_images', upload.any(), function (req, res) {
+  console.log(req.body, 'body')
+  console.log(req.file, 'file')
+  console.log(req.files, 'files')
+  res.status(200).end()
+})
+
 // log in
-router.post('/login', upload.none(), function (req, res, next) {
+router.post('/login', function (req, res) {
   var db = req.db
   var username = req.body.username
   var password = req.body.password
