@@ -23,3 +23,13 @@ button {
   background: none;
   padding: 0;
 }
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+body {
+  color: #4a4a4a;
+  font-family: "Helvetica Neue", Helvetica, Arial, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "WenQuanYi Micro Hei", sans-serif;
+}
