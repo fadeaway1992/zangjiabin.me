@@ -17,4 +17,11 @@ const generateNewSession = function ({username, role}) {
  }
 }
 
-module.exports = {generateNewSession, generateExpiry}
+const transformDateObjectToCommonTimeStirng = function (DateObject) {
+  const YEAR = DateObject.getFullYear()
+  const MONTH = DateObject.getMonth() + 1
+  const DATE = DateObject.getDate()
+  return YEAR + '年' + MONTH + '月' + DATE + '日'
+}
+
+module.exports = {generateNewSession, generateExpiry, transformDateObjectToCommonTimeStirng}

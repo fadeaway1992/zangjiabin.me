@@ -4,6 +4,7 @@ var bcrypt = require('bcryptjs')
 var multer  = require('multer')
 var path = require('path')
 const uuidv1 = require('uuid/v1')
+var transformDateObjectToCommonTimeString = require('../utils/utils.js').transformDateObjectToCommonTimeStirng
 var storage = multer.diskStorage({
   destination: function (req, file, cb) {
     cb(null, path.join(__dirname, '../public/images'))
@@ -119,6 +120,12 @@ router.get('/post', function (req, res) {
   const perPage = 10
   const db = req.db
   db.get('posts').find({},{skip: perPage * (page - 1), limit: perPage, sort: {_id: -1}}).then((cursor) => {
+    cursor.forEach(function (post) {
+      post.postDate = transformDateObjectToCommonTimeString(post.postDate)
+      if (post.lastModified) {
+        post.lastModified = transformDateObjectToCommonTimeString(post.lastModified)
+      }
+    })
     const result = {
       page: page,
       posts: cursor

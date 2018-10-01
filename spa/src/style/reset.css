@@ -1,4 +1,4 @@
-html, body, h1, h2, h3, h4, h5, h6 {
+html, body{
   margin: 0;
 }
 
@@ -12,6 +12,12 @@ html, body, h1, h2, h3, h4, h5, h6 {
   display: flex;
   flex-direction: row;
   justify-content: flex-end;
+}
+
+.flex-row-left {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
 }
 
 input, button, textarea {
@@ -31,5 +37,6 @@ a {
 
 body {
   color: #4a4a4a;
+  font-size: 16px;
   font-family: "Helvetica Neue", Helvetica, Arial, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "WenQuanYi Micro Hei", sans-serif;
 }
