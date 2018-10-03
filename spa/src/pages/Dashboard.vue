@@ -2,8 +2,10 @@
   <div class="dashboard-page page-container flex-row-left">
     <!-- 侧栏 -->
     <div class="side-bar">
-      <img src="../../../favicon_package/apple-touch-icon.png" alt="">
-      <h5>Hello, world!</h5>
+      <div class="content">
+        <img class="avatar" src="../../../favicon_package/apple-touch-icon.png">
+        <h4 class="slogan">Hello, World!</h4>
+      </div>
     </div>
     <!-- 文章 -->
     <div class="posts-container">
@@ -49,14 +51,30 @@ export default {
 .dashboard-page.page-container {
   width: 960px;
   margin: 0 auto;
+  margin-top: 30px;
   .side-bar {
     width: 180px;
-    background: #cccccc;
     margin-right: 80px;
+    .content {
+      width: 100%;
+      img.avatar {
+        display: block;
+        margin: 0 auto;
+        margin-bottom: 10px;
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+      }
+       .slogan{
+        text-align: center;
+        font-size: 18px;
+      }
+    }
   }
   .posts-container {
     width: 700px;
     .post-container {
+      &:not(:first-child) {margin-top: 35px;}
       .post-title {
         margin-bottom: 5px;
         color: #262626;
@@ -71,6 +89,15 @@ export default {
       }
       .post-body {
         line-height: 1.5em;
+        margin-top: 10px;
+        h1, h2, h3, h4, h5, h6 {
+          margin: 0.5em 0;
+        }
+        img {
+          display: block;
+          margin: 10px auto;
+          max-width: 680px;
+        }
         blockquote {
           margin-left: 0;
           padding-left: 10px;
