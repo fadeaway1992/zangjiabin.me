@@ -98,7 +98,7 @@ export default {
         }
         img {
           display: block;
-          margin: 10px auto;
+          margin: 10px 0;
           max-width: 680px;
         }
         blockquote {
@@ -110,9 +110,10 @@ export default {
       }
     }
     .show-more {
-      margin-top: 20px;
+      margin: 20px 0;
       a.goto-indexes {
         font-size: 0.8em;
+        color: #8e8e8e;
         &:hover {
           color: #57ad68;
           text-decoration: underline;
