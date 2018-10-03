@@ -15,6 +15,9 @@
         <p class="post-time">发布于 {{post.postDate}}</p>
         <div class="post-body" v-html="markdown().toHTML(post.body)"></div><!-- 正文 -->
       </div>
+      <div class="show-more">
+        <a class="goto-indexes" href="/indexes">查看更多文章</a>
+      </div>
     </div>
   </div>
 </template>
@@ -103,6 +106,16 @@ export default {
           padding-left: 10px;
           border-left: 4px solid #cccccc;
           color: #8c8c8c;
+        }
+      }
+    }
+    .show-more {
+      margin-top: 20px;
+      a.goto-indexes {
+        font-size: 0.8em;
+        &:hover {
+          color: #57ad68;
+          text-decoration: underline;
         }
       }
     }
