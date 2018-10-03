@@ -1,7 +1,10 @@
 <template>
   <div class="dashboard-page page-container flex-row-left">
     <!-- 侧栏 -->
-    <div class="side-bar"></div>
+    <div class="side-bar">
+      <img src="../../../favicon_package/apple-touch-icon.png" alt="">
+      <h5>Hello, world!</h5>
+    </div>
     <!-- 文章 -->
     <div class="posts-container">
       <!-- 一篇文章 -->
