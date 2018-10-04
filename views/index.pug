@@ -1,11 +1,18 @@
 extends layout
 
+block head
+  link(rel='stylesheet', href='/public/post.css')
+  script.
+    window.postId = "#{id}"
+
 block content
-  h1= title
-  p #{author} 发布于 #{postDate}
-  div!= html
-  if lastModified
-    p 上次修改时间 #{lastModified}
-  div(class='operation hidden')
-    button(class='remove') 删除
-    a(href='/edit/' + id) 编辑
+  div.page-container.post-page
+    h1(class='title')= title
+    p(class='post-date') #{author} 发布于 #{postDate}
+    div(class='post-content')!= html
+    if lastModified
+      p(class='last-modified') 上次修改时间 #{lastModified}
+    div(class='operation hidden')
+      button(class='remove') 删除
+      a(class='edit', href='/edit/' + id) 编辑
+  script(src='/public/post.js')
