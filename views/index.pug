@@ -1,14 +1,15 @@
 extends layout
 
 block head
+  link(rel='stylesheet', href='/public/reset.css')
   link(rel='stylesheet', href='/public/post.css')
   script.
     window.postId = "#{id}"
 
 block content
   div.page-container.post-page
-    h1(class='title')= title
-    p(class='post-date') #{author} 发布于 #{postDate}
+    h2(class='title')= title
+    p(class='post-date') 发布于 #{postDate}
     div(class='post-content')!= html
     if lastModified
       p(class='last-modified') 上次修改时间 #{lastModified}

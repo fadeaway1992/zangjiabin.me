@@ -1,6 +1,7 @@
 var express = require('express')
 var router = express.Router()
 var markdown = require('markdown').markdown
+var transformDateObjectToCommonTimeString = require('../utils/utils.js').transformDateObjectToCommonTimeStirng
 
 router.get('/:post_id', function(req, res) {
   const postId = req.params.post_id
@@ -12,9 +13,9 @@ router.get('/:post_id', function(req, res) {
       const post = cursor[0]
       const token = req.headers.token
       post.html = markdown.toHTML(post.body)
-      post.postDate = post.postDate.toLocaleString()
+      post.postDate = transformDateObjectToCommonTimeString(post.postDate)
       if (post.lastModified) {
-        post.lastModified = post.lastModified.toLocaleString()
+        post.lastModified = transformDateObjectToCommonTimeString(post.lastModified)
       }
       if (token) {
         db.get('sessions').find({access_token: token}).then((cursor) => {
