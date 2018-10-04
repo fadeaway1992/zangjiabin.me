@@ -2,6 +2,6 @@ package-lock.json
 node_modules
 npm-debug.log
 spa/dist
-data
+data/*
 sessions
-public/images
+public/images/*

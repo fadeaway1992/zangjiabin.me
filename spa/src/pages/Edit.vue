@@ -5,17 +5,19 @@
       <input type="text" class="title" v-model="title" placeholder="请输入标题">
     </div>
     <div class="flex-row-between edit-container">
-      <textarea class="editor" v-model="sourceCode"></textarea>
-      <div class="preview" v-html="htmlCode"></div>
-    </div>
-    <div class="upload">
-      <input type="file" multiple name="images" accept="image/jpeg, image/png, image/jpg, image/gif" @change="uploadImages">
-      <div>
-        <p v-for="path in imagePaths" :key="path">{{path}}</p>
+      <div class="left-side">
+        <textarea class="editor" v-model="sourceCode"></textarea>
+        <div class="upload">
+          <input type="file" multiple name="images" accept="image/jpeg, image/png, image/jpg, image/gif" @change="uploadImages">
+          <div class="paths">
+            <p class="path" v-for="path in imagePaths" :key="path">{{path}}</p>
+          </div>
+          <div class="submit-container flex-row-right">
+            <button class="submit" @click="post">发布</button>
+          </div>
+        </div>
       </div>
-    </div>
-    <div class="submit-container flex-row-right">
-      <button class="submit" @click="post">发布</button>
+      <div class="preview" v-html="htmlCode"></div>
     </div>
   </div>
 </template>
@@ -134,21 +136,51 @@ export default {
   .edit-container {
     margin-top: 20px;
     padding: 15px;
-    textarea.editor {
-      width: 450px;
-      height: 600px;
-      resize: none;
+    .left-side {
+      textarea.editor {
+        width: 450px;
+        height: 600px;
+        resize: none;
+      }
+      .upload {
+        .paths {
+          .path {
+          
+          }
+        }
+        .submit-container {
+          margin: 15px 0 30px;
+          .submit {
+            padding: 0 5px;
+            font-size: 18px;
+            cursor: pointer;
+            &:hover {
+              color: #57ad68;
+            }
+          }
+        }
+      }
     }
     div.preview {
       width: 450px;
       height: 600px;
-    }
-  }
-  .submit-container {
-    margin: 15px 0 30px;
-    .submit {
-      padding: 0 5px;
-      font-size: 20px;
+      overflow-y: auto;
+      line-height: 1.5em;
+      margin: 0;
+      h1, h2, h3, h4, h5, h6 {
+        margin: 0.5em 0;
+      }
+      img {
+        display: block;
+        margin: 10px 0;
+        max-width: 450px;
+      }
+      blockquote {
+        margin-left: 0;
+        padding-left: 10px;
+        border-left: 4px solid #cccccc;
+        color: #8c8c8c;
+      }
     }
   }
 }
