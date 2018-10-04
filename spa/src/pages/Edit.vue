@@ -164,6 +164,23 @@ export default {
     div.preview {
       width: 450px;
       height: 600px;
+      overflow-y: auto;
+      line-height: 1.5em;
+      margin: 0;
+      h1, h2, h3, h4, h5, h6 {
+        margin: 0.5em 0;
+      }
+      img {
+        display: block;
+        margin: 10px 0;
+        max-width: 450px;
+      }
+      blockquote {
+        margin-left: 0;
+        padding-left: 10px;
+        border-left: 4px solid #cccccc;
+        color: #8c8c8c;
+      }
     }
   }
 }
