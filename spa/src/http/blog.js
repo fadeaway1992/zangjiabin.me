@@ -1,13 +1,14 @@
 import {axios} from './request.js'
 import {POST__BLOG, GET__BLOG, GET__BLOG_DETAIL__FUNC, PUT__BLOG_DETAIL__FUNC} from './url.js'
 
-export function postBlog ({title, content}) {
+export function postBlog ({title, content, labels}) {
   return axios({
     method: 'post',
     url: POST__BLOG,
     data: {
       title,
-      content
+      content,
+      labels
     }
   })
 }

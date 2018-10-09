@@ -13,6 +13,9 @@
       <div class="post-container" v-if="posts.length" v-for="post in posts" :key="post.id">
         <h2 class="post-title"><a :href="'/posts/' + post.id">{{post.title}}</a></h2><!-- 标题 -->
         <p class="post-time">发布于 {{post.postDate}}</p>
+        <p class="post-labels" v-if="post.labels && post.labels.length">
+          <span v-for="label in post.labels" :key="label">#{{label}}&nbsp;&nbsp;</span>
+        </p>
         <div class="post-body" v-html="markdown().toHTML(post.body)"></div><!-- 正文 -->
       </div>
       <div class="show-more">
@@ -88,6 +91,11 @@ export default {
       .post-time {
         font-size: 0.8em;
         margin: -5px 0;
+        color: #b3b3b1;
+      }
+      .post-labels {
+        font-size: 0.8em;
+        margin: 5px 0;
         color: #b3b3b1;
       }
       .post-body {
