@@ -3,6 +3,7 @@
     <h2 class="page-header">编辑页面</h2>
     <div class="title-container">
       <input type="text" class="title" v-model="title" placeholder="请输入标题">
+      <input type="text" class="labels" v-model="labels" placeholder="给文章添加合适的标签">
     </div>
     <div class="flex-row-between edit-container">
       <div class="left-side">
@@ -34,6 +35,7 @@ export default {
     return {
       sourceCode: '',
       title: '',
+      labels: '',
       imagePaths: []
     }
   },
@@ -91,7 +93,8 @@ export default {
             }
           })
         } else { // 发布
-          postBlog({title: this.title, content: this.sourceCode}).then((res) => {
+        const labels = this.labels === '' ? [] :this.labels.split(/\s*[,，]\s*/)
+          postBlog({title: this.title, content: this.sourceCode, labels}).then((res) => {
             console.log(res, 'res')
           }).catch((err) => {
             if (err.response && err.response.data.error) {
@@ -128,9 +131,17 @@ export default {
   }
   .title-container {
     padding: 15px;
+    input {
+      display: block;
+    }
     .title {
       font-size: 22px;
       width: 300px;
+    }
+    .labels {
+      margin-top: 20px;
+      font-size: 16px;
+      width: 400px;
     }
   }
   .edit-container {

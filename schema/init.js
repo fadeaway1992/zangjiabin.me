@@ -81,6 +81,9 @@ db.once('open', function() {
     body: {
       type: String,
       required: true
+    },
+    labels: {
+      type: [String],
     }
   })
 

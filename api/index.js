@@ -7,7 +7,7 @@ const uuidv1 = require('uuid/v1')
 var transformDateObjectToCommonTimeString = require('../utils/utils.js').transformDateObjectToCommonTimeStirng
 var storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, path.join(__dirname, '../public/images'))
+    cb(null, path.join(__dirname, '../../images'))
   },
   filename: function (req, file, cb) {
     const nameArray = file.originalname.split('.')
@@ -38,7 +38,7 @@ router.post('/upload_images', upload.any(), function (req, res) {
       } else {
         const files = req.files
         let paths = files.map(function (file) {
-          return '/public/images/' + file.filename
+          return '/images/' + file.filename
         })
         return res.json(paths)
       }
@@ -156,7 +156,8 @@ router.post('/post', function (req, res) {
           author: session.username,
           postDate: new Date(),
           title: req.body.title,
-          body: req.body.content
+          body: req.body.content,
+          labels: req.body.labels
         }
         db.get('posts').insert(newPost).then((cursor) => {
           return res.json(cursor)
