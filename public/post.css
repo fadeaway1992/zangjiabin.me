@@ -51,7 +51,7 @@
 .page-container.post-page .operation.hidden button.remove {
   border: none;
   background: none;
-  font-size: 16px;
+  font-size: 1em;
   line-height: 20px;
   cursor: pointer;
   color: inherit;
@@ -61,11 +61,22 @@
   color: #57ad68;
 }
 .page-container.post-page .operation.hidden a.edit {
-  font-size: 16px;
+  font-size: 1em;
   line-height: 20px;
   color: inherit;
   text-decoration: none;
 }
 .page-container.post-page .operation.hidden a.edit:hover {
   color: #57ad68;
+}
+@media screen and (max-width: 960px) {
+  .page-container.post-page {
+    width: 100%;
+    padding: 3vw;
+    margin: 0;
+    box-sizing: border-box;
+  }
+  .page-container.post-page .post-content img {
+    max-width: 100%;
+  }
 }

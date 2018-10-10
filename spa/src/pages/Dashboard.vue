@@ -73,7 +73,7 @@ export default {
       }
        .slogan{
         text-align: center;
-        font-size: 18px;
+        font-size: 1.125rem;
       }
     }
   }
@@ -89,12 +89,12 @@ export default {
         }
       }
       .post-time {
-        font-size: 0.8em;
+        font-size: 0.8rem;
         margin: -5px 0;
         color: #b3b3b1;
       }
       .post-labels {
-        font-size: 0.8em;
+        font-size: 0.8rem;
         margin: 5px 0;
         color: #b3b3b1;
       }
@@ -120,11 +120,39 @@ export default {
     .show-more {
       margin: 20px 0;
       a.goto-indexes {
-        font-size: 0.8em;
+        font-size: 0.8rem;
         color: #8e8e8e;
         &:hover {
           color: #57ad68;
           text-decoration: underline;
+        }
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 960px) {
+  .dashboard-page.page-container.flex-row-left {
+    width: 100%;
+    box-sizing: border-box;
+    flex-direction: column;
+    margin-top: 0;
+    padding: 3vw;
+    .side-bar {
+      width: 100%;
+      margin: 0 0 3vw;
+      img.avatar {
+        width: 20vw;
+        height: 20vw;
+      }
+    }
+    .posts-container {
+      width: 100%;
+      .post-container {
+        .post-body {
+          img {
+            max-width: 100%;
+          }
         }
       }
     }
