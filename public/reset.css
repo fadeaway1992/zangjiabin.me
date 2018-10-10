@@ -40,3 +40,10 @@ body {
   font-size: 16px;
   font-family: "Helvetica Neue", Helvetica, Arial, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "WenQuanYi Micro Hei", sans-serif;
 }
+
+
+@media screen and (max-width: 960px) {
+  body {
+    font-size: 14px;
+  }
+}
