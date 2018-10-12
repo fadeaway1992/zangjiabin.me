@@ -1,12 +1,7 @@
 <template>
   <div class="dashboard-page page-container flex-row-left">
     <!-- 侧栏 -->
-    <div class="side-bar">
-      <div class="content">
-        <img class="avatar" src="../../../favicon_package/apple-touch-icon.png">
-        <h4 class="slogan">Hello, World!</h4>
-      </div>
-    </div>
+    <SideNavi/>
     <!-- 文章 -->
     <div class="posts-container">
       <!-- 一篇文章 -->
@@ -28,8 +23,12 @@
 <script>
 import { getBlogs } from '@/http/blog.js'
 import { markdown } from 'markdown'
+import SideNavi from '@/components/SideNavi.vue'
 export default {
   name: 'Dashboard',
+  components: {
+    SideNavi
+  },
   data () {
     return {
       page: 1,
@@ -58,25 +57,6 @@ export default {
   width: 960px;
   margin: 0 auto;
   margin-top: 30px;
-  .side-bar {
-    width: 180px;
-    margin-right: 80px;
-    .content {
-      width: 100%;
-      img.avatar {
-        display: block;
-        margin: 0 auto;
-        margin-bottom: 10px;
-        width: 100px;
-        height: 100px;
-        border-radius: 50%;
-      }
-       .slogan{
-        text-align: center;
-        font-size: 1.125rem;
-      }
-    }
-  }
   .posts-container {
     width: 700px;
     .post-container {
@@ -138,14 +118,6 @@ export default {
     flex-direction: column;
     margin-top: 0;
     padding: 3vw;
-    .side-bar {
-      width: 100%;
-      margin: 0 0 3vw;
-      img.avatar {
-        width: 20vw;
-        height: 20vw;
-      }
-    }
     .posts-container {
       width: 100%;
       .post-container {

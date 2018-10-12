@@ -134,6 +134,27 @@ router.get('/post', function (req, res) {
   })
 })
 
+router.get('/post_index', function (req, res) {
+  const page = req.query.page || 1
+  const perPage = 10
+  const db = req.db
+  db.get('posts').find({}, {skip: perPage * (page - 1), limit: perPage + 1, sort: {_id: -1}, fields: { _id: 0, body: 0 } }).then((cursor) => {
+    cursor.forEach(function (post) {
+      post.postDate = transformDateObjectToCommonTimeString(post.postDate)
+      if (post.lastModified) {
+        post.lastModified = transformDateObjectToCommonTimeString(post.lastModified)
+      }
+    })
+    const result = {
+      page: parseInt(page),
+      perPage,
+      posts: cursor.slice(0, perPage),
+      more: cursor.length === perPage + 1
+    }
+    return res.send(result)
+  })
+})
+
 // Post a blog
 router.post('/post', function (req, res) {
   const token = req.headers.token
