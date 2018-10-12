@@ -14,7 +14,7 @@
         <div class="post-body" v-html="markdown().toHTML(post.body)"></div><!-- 正文 -->
       </div>
       <div class="show-more">
-        <a class="goto-indexes" href="/indexes">查看更多文章</a>
+        <a class="goto-indexes" href="/index">查看更多文章</a>
       </div>
     </div>
   </div>
