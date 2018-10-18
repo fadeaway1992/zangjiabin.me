@@ -9,10 +9,10 @@ var bodyParser = require('body-parser')
 var APIs = require('./api/index')
 
 var monk = require('monk');
-var db = monk('localhost:27017/myapp');
+var db = monk('zangjiabin:fade@localhost:27017/myapp');
 
 var mongoose = require('mongoose')
-mongoose.connect('mongodb://127.0.0.1:27017/myapp')
+mongoose.connect('zangjiabin:fade@mongodb://127.0.0.1:27017/myapp')
 
 var app = express();
 
