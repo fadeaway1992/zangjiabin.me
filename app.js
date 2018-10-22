@@ -9,10 +9,15 @@ var bodyParser = require('body-parser')
 var APIs = require('./api/index')
 
 var monk = require('monk');
-var db = monk('localhost:27017/myapp');
+var db = monk('zangjiabin:fade@localhost:27017/myapp', {authSource:'admin'});
 
 var mongoose = require('mongoose')
-mongoose.connect('mongodb://127.0.0.1:27017/myapp')
+mongoose.connect('mongodb://zangjiabin:fade@localhost:27017/myapp?authSource=admin')
+
+var mongoosedb = mongoose.connection
+mongoosedb.once('open', function () {
+  console.log('非常开心连接成功')
+})
 
 var app = express();
 
