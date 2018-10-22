@@ -1,36 +1,33 @@
-var express = require('express')
-var router = express.Router()
-var markdown = require('markdown').markdown
-var transformDateObjectToCommonTimeString = require('../utils/utils.js').transformDateObjectToCommonTimeStirng
+const express = require('express')
+const router = express.Router()
+const markdown = require('markdown').markdown
+const transformDateObjectToCommonTimeString = require('../utils/utils.js').transformDateObjectToCommonTimeString
+const postModel = require('../model/post.js')
 
 router.get('/:post_id', function(req, res) {
-  const postId = req.params.post_id
-  const db = req.db
-  db.get('posts').find({id: postId}, {_id: 0}).then((cursor) => {
-    if (!cursor.length) {
-      res.render('error', { message: '文章不存在', error: { status: 404} })
-    } else {
-      const post = cursor[0]
-      const token = req.headers.token
-      post.html = markdown.toHTML(post.body)
-      post.postDate = transformDateObjectToCommonTimeString(post.postDate)
-      if (post.lastModified) {
-        post.lastModified = transformDateObjectToCommonTimeString(post.lastModified)
+  const postId = req.params.post_id;
+  (async function () {
+    try {
+      let post = await postModel.findOne({id:postId}).lean()
+      if (!post) {
+        res.render('error', { message: '文章不存在', error: { status: 404} })
+        return
+      } else {
+        post.html = markdown.toHTML(post.body)
+        post.postDate = transformDateObjectToCommonTimeString(post.postDate)
+        if (post.lastModified) {
+          post.lastModified = transformDateObjectToCommonTimeString(post.lastModified)
+        }
+        console.log(post,'post')
+        res.render('index', post)
+        return
       }
-      if (token) {
-        db.get('sessions').find({access_token: token}).then((cursor) => {
-          if (cursor.length) {
-            const user = cursor[0]
-            if (user.role === 'admin') {
-              post.admin = true
-              return res.render('index', post)
-            }
-          }
-        })
-      }
-      res.render('index', post)
+    } catch (error) {
+      console.log(error, 'error ')
+      res.status(500).send(error)
+      return
     }
-  })
+  })()
 });
 
 module.exports = router;

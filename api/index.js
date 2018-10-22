@@ -4,7 +4,7 @@ var bcrypt = require('bcryptjs')
 var multer  = require('multer')
 var path = require('path')
 const uuidv1 = require('uuid/v1')
-var transformDateObjectToCommonTimeString = require('../utils/utils.js').transformDateObjectToCommonTimeStirng
+var transformDateObjectToCommonTimeString = require('../utils/utils.js').transformDateObjectToCommonTimeString
 var storage = multer.diskStorage({
   destination: function (req, file, cb) {
     cb(null, path.join(__dirname, '../../images'))
