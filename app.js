@@ -8,9 +8,6 @@ var postsRouter = require('./routes/post');
 var bodyParser = require('body-parser')
 var APIs = require('./api/index')
 
-var monk = require('monk');
-var db = monk('zangjiabin:fade@localhost:27017/myapp', {authSource:'admin'});
-
 var mongoose = require('mongoose')
 mongoose.connect('mongodb://zangjiabin:fade@localhost:27017/myapp?authSource=admin')
 
@@ -40,11 +37,6 @@ app.use(function (req, res, next) {
   next();
 });
 
-// Make our db accessible to our router
-app.use(function(req,res,next){
-  req.db = db;
-  next();
-});
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));

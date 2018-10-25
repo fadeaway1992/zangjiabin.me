@@ -1,11 +1,11 @@
-var express = require('express')
-var router = express.Router()
-var bcrypt = require('bcryptjs')
-var multer  = require('multer')
-var path = require('path')
+const express = require('express')
+const router = express.Router()
+const bcrypt = require('bcryptjs')
+const multer  = require('multer')
+const path = require('path')
 const uuidv1 = require('uuid/v1')
-var transformDateObjectToCommonTimeString = require('../utils/utils.js').transformDateObjectToCommonTimeString
-var storage = multer.diskStorage({
+const transformDateObjectToCommonTimeString = require('../utils/utils.js').transformDateObjectToCommonTimeString
+const storage = multer.diskStorage({
   destination: function (req, file, cb) {
     cb(null, path.join(__dirname, '../../images'))
   },
@@ -15,187 +15,188 @@ var storage = multer.diskStorage({
     cb(null, uuidv1() + extName)
   }
 })
-var upload = multer({ storage: storage })
+const upload = multer({ storage: storage })
 
-var generateNewSession = require('../utils/utils.js').generateNewSession
+const generateNewSession = require('../utils/utils.js').generateNewSession
+
+// import models
+const sessionModel = require('../model/session.js')
+const userModel = require('../model/user.js')
+const postModel = require('../model/post.js')
+
+/* 鉴权 */
+function checkAuth (token) {
+  return new Promise(async function (resolve, reject) {
+    if (!token) {
+      return reject(0) // token 不存在
+    }
+    try {
+      const session = await sessionModel.findOne({access_token: token}).lean()
+      if (!session) {
+        return reject(1) // 找不到该token
+      }
+      if (session.role !== 'admin') {
+        return reject(2) // 该会话非管理员
+      }
+      if (session.expiry.getTime() < new Date().getTime()) {
+        return reject(3) // token 已经过期
+      }
+      return resolve(session)
+    } catch (error) {
+      return reject(error)
+    }
+  })
+}
+
+function handleError (error, res) {
+  console.log(error)
+  console.log('handle error')
+  if (typeof error === 'number' && error <=3 && error >=0) {
+    return res.status(401).json({error: {code: '401', message: '没有权限'}})
+  } else {
+    return res.status(500).send(error)
+  }
+}
+
 
 // upload images
 router.post('/upload_images', upload.any(), function (req, res) {
   const token = req.headers.token
-  const db = req.db
-  if (!token) {
-    return res.status(401).json({error: {code: '401', message: '没有权限'}}) // 没有 token
-  } else {
-    db.get('sessions').find({access_token: token}).then((cursor) => {
-      if (!cursor.length) {
-        return res.status(401).json({error: {code: '401', message: '没有权限'}}) // 数据库中找不到该 token
-      }
-      const session = cursor[0]
-      if (session.role !== 'admin') {
-        return res.status(401).json({error: {code: '401', message: '没有权限'}}) // 该 会话 非管理员
-      } else if (session.expiry.getTime() < new Date().getTime()) {
-        return res.status(401).json({error: {code: '401', message: '没有权限'}}) // token 已经过期
-      } else {
-        const files = req.files
-        let paths = files.map(function (file) {
-          return '/images/' + file.filename
-        })
-        return res.json(paths)
-      }
+  checkAuth(token).then(function (session) {
+    const files = req.files
+    let paths = files.map(function (file) {
+      return '/images/' + file.filename
     })
-  }
+    return res.json(paths)
+  }).catch(function (error) {
+    handleError(error, res)
+  })
 })
 
 // log in
 router.post('/login', function (req, res) {
-  var db = req.db
-  var username = req.body.username
-  var password = req.body.password
-  db.get('users').find({"username": username}, {}).then(function(cursor){
-    if (!cursor.length) {
-      return res.status(422).json({error: {code: '001', message: '用户名不存在'}})
-    } else {
-      var validation = bcrypt.compareSync(password, cursor[0].password); // 验证密码
-      if(!validation) {
-        return res.status(422).json({error: {code: '002', message: '密码错误'}})
+  (async function () {
+    const username = req.body.username
+    const password = req.body.password
+    try {
+      const user = await userModel.findOne({"username": username})
+      if (!user) { // 用户不存在
+        return res.status(422).json({error: {code: '001', message: '用户名不存在'}})
       } else {
-        const sessions = db.get('sessions')
-        const role = cursor[0].role
-        sessions.find({username}).then((cursor) => {
-          const newSession = generateNewSession({username, role})
-          function finalAction () {
-            res.json({token: newSession.access_token}).end()
-          }
-          if (!cursor.length) {
-            sessions.insert(newSession).then((cursor) => {
-              finalAction()
-            }).catch((err) => {
-              console.log(err)
-            })
-          } else {
-            sessions.remove({username}).then(() => {
-              sessions.insert(newSession).then((cursor) => {
-                finalAction()
-              }).catch((err) => {
-                console.log(err)
-              })
-            }).catch((err) => {
-              console.log(err)
-            })
-          }
-        }).catch((err) => {
-          res.sendStatus(500)
-        })
-      }
-    }
-  }).catch((err) => {
-    res.sendStatus(500)
-  })
-})
-
-router.get('/login_status', function (req, res) {
-  const token = req.headers.token
-  const db = req.db
-  if (!token) {
-    res.json({logged: false, user: null})
-  } else {
-    const sessions = db.get('sessions')
-    sessions.find({access_token: token}, {"_id": 0}).then((cursor) => {
-      if (!cursor.length) {
-        res.json({logged: false, user: null})
-      } else {
-        const user = cursor[0]
-        if (user.expiry.getTime() < new Date().getTime()) {
-          res.json({logged: false, user: null})
-        } else {
-          res.json({logged: true, user: user})
+        var validation = bcrypt.compareSync(password, user.password)
+        if(!validation) { // 密码错误
+          return res.status(422).json({error: {code: '002', message: '密码错误'}})
+        } else { // 更新或者创建 session
+          const newSession = generateNewSession({username, role:user.role})
+          await sessionModel.update({username}, newSession, {upsert: true})
+          res.json({token: newSession.access_token}).end()
+          return
         }
       }
-    })
-  }
+    } catch (error) {
+      res.status(500).send(error)
+    }
+  })()
+})
+
+
+router.get('/login_status', function (req, res) {
+  (async function () {
+    const token = req.headers.token
+    let session
+    if (!token) {
+      return res.json({logged: false, user: null})
+    }
+    try {
+      session = await sessionModel.findOne({access_token: token}).lean()
+    } catch (error) {
+      return res.status(500).send(error)
+    }
+    if (!session) {
+      return res.json({logged: false, user: null})
+    }
+    if (session.expiry.getTime() < new Date().getTime()) {
+      return res.json({logged: false, user: null})
+    }
+    return res.json({logged: true, user: session})
+  })()
 })
 
 router.get('/post', function (req, res) {
-  const page = req.query.page || 1
-  const perPage = 10
-  const db = req.db
-  db.get('posts').find({},{skip: perPage * (page - 1), limit: perPage, sort: {_id: -1}}).then((cursor) => {
-    cursor.forEach(function (post) {
-      post.postDate = transformDateObjectToCommonTimeString(post.postDate)
-      if (post.lastModified) {
-        post.lastModified = transformDateObjectToCommonTimeString(post.lastModified)
-      }
-    })
+  (async function () {
+    const page = req.query.page || 1
+    const perPage = 10
+    const posts = await postModel.find({}, '-_id', {skip: perPage * (page - 1), limit: perPage, sort: {_id: -1}}).lean()
+    if (posts.length) {
+      posts.forEach(function (post) {
+        post.postDate = transformDateObjectToCommonTimeString(post.postDate)
+        if (post.lastModified) {
+          post.lastModified = transformDateObjectToCommonTimeString(post.lastModified)
+        }
+      })
+    }
     const result = {
-      page: page,
-      posts: cursor
+      page,
+      posts
     }
     return res.send(result)
-  })
+  })()
 })
 
 router.get('/post_index', function (req, res) {
-  const page = req.query.page || 1
-  const perPage = 10
-  const db = req.db
-  db.get('posts').find({}, {skip: perPage * (page - 1), limit: perPage + 1, sort: {_id: -1}, fields: { _id: 0, body: 0 } }).then((cursor) => {
-    cursor.forEach(function (post) {
-      post.postDate = transformDateObjectToCommonTimeString(post.postDate)
-      if (post.lastModified) {
-        post.lastModified = transformDateObjectToCommonTimeString(post.lastModified)
-      }
-    })
+  (async function () {
+    const page = req.query.page || 1
+    const perPage = 10
+    const posts = await postModel.find({}, '-_id -body', {skip: perPage * (page - 1), limit: perPage + 1, sort: {_id: -1}}).lean()
+    console.log(posts, 'posts')
+    if (posts.length) {
+      posts.forEach(function (post) {
+        post.postDate = transformDateObjectToCommonTimeString(post.postDate)
+        if (post.lastModified) {
+          post.lastModified = transformDateObjectToCommonTimeString(post.lastModified)
+        }
+      })
+    }
     const result = {
       page: parseInt(page),
       perPage,
-      posts: cursor.slice(0, perPage),
-      more: cursor.length === perPage + 1
+      posts: posts.slice(0, perPage),
+      more: posts.length === perPage + 1
     }
     return res.send(result)
-  })
+  })()
 })
 
 // Post a blog
 router.post('/post', function (req, res) {
   const token = req.headers.token
-  const db = req.db
-  if (!token) {
-    return res.status(401).json({error: {code: '401', message: '没有权限'}}) // 没有 token
-  } else {
-    db.get('sessions').find({access_token: token}).then((cursor) => {
-      if (!cursor.length) {
-        return res.status(401).json({error: {code: '401', message: '没有权限'}}) // 数据库中找不到该 token
+  checkAuth(token).then(function (session) {
+    const params = {
+      id: uuidv1(),
+      author: session.username,
+      postDate: new Date(),
+      title: req.body.title,
+      body: req.body.content,
+      labels: req.body.labels
+    }
+    const newPost = new postModel(params)
+    newPost.save(function (err) {
+      if (err) {
+        return handleError(error, res)
       }
-      const session = cursor[0]
-      if (session.role !== 'admin') {
-        return res.status(401).json({error: {code: '401', message: '没有权限'}}) // 该 会话 非管理员
-      } else if (session.expiry.getTime() < new Date().getTime()) {
-        return res.status(401).json({error: {code: '401', message: '没有权限'}}) // token 已经过期
-      } else {
-        const newPost = {
-          id: uuidv1(),
-          author: session.username,
-          postDate: new Date(),
-          title: req.body.title,
-          body: req.body.content,
-          labels: req.body.labels
-        }
-        db.get('posts').insert(newPost).then((cursor) => {
-          return res.json(cursor)
-        })
-      }
+      return res.send(newPost)
     })
-  }
+  }).catch(function(error){
+    return handleError(error, res)
+  })
 })
 
 router.get('/post/:postId', function (req, res) {
-  const db = req.db
   const postId = req.params.postId
-  db.get('posts').find({id: postId}, {_id: 0}).then((cursor) => {
-    if (!cursor.length) {
+  postModel.findOne({id: postId}, '-_id').lean().then((post) => {
+    if (!post) {
       return res.status(404).json({error: {code: '404', message: '该文章不存在'}}) // 文章不存在
     } else {
-      const post = cursor[0]
       return res.json(post)
     }
   })
@@ -203,65 +204,35 @@ router.get('/post/:postId', function (req, res) {
 
 router.put('/post/:postId', function(req, res) {
   const token = req.headers.token
-  const db = req.db
   const postId = req.params.postId
-  if (!token) {
-    return res.status(401).json({error: {code: '401', message: '没有权限'}}) // 没有 token
-  } else {
-    db.get('sessions').find({access_token: token}).then((cursor) => {
-      if (!cursor.length) {
-        return res.status(401).json({error: {code: '401', message: '没有权限'}}) // 数据库中找不到该 token
-      }
-      const session = cursor[0]
-      if (session.role !== 'admin') {
-        return res.status(401).json({error: {code: '401', message: '没有权限'}}) // 该 会话 非管理员
-      } else if (session.expiry.getTime() < new Date().getTime()) {
-        return res.status(401).json({error: {code: '401', message: '没有权限'}}) // token 已经过期
-      } else { // token 有效
-        db.get('posts').find({id: postId}).then((cursor) => {
-          if (!cursor.length) {
-            return res.status(404).json({error: {code: '404', message: '该文章不存在'}}) // 文章不存在
-          } else {
-            req.body.lastModified = new Date()
-            db.get('posts').update({id: postId}, {$set: req.body}).then((cursor) => {
-              return res.send('更新成功')
-            })
-          }
-        })
+  req.body.lastModified = new Date()
+  checkAuth(token).then(function (session) {
+    postModel.findOneAndUpdate({id: postId}, req.body, {new: true}).lean().then((post) => {
+      if (!post) {
+        return res.status(404).json({error: {code: '404', message: '该文章不存在'}}) // 文章不存在
+      } else {
+        return res.send(post)
       }
     })
-  }
+  }).catch(function (error) {
+    handleError(error, res)
+  })
 })
 
 router.delete('/post/:postId', function(req, res) {
   const token = req.headers.token
-  const db = req.db
   const postId = req.params.postId
-  if (!token) {
-    return res.status(401).json({error: {code: '401', message: '没有权限'}}) // 没有 token
-  } else {
-    db.get('sessions').find({access_token: token}).then((cursor) => {
-      if (!cursor.length) {
-        return res.status(401).json({error: {code: '401', message: '没有权限'}}) // 数据库中找不到该 token
-      }
-      const session = cursor[0]
-      if (session.role !== 'admin') {
-        return res.status(401).json({error: {code: '401', message: '没有权限'}}) // 该 会话 非管理员
-      } else if (session.expiry.getTime() < new Date().getTime()) {
-        return res.status(401).json({error: {code: '401', message: '没有权限'}}) // token 已经过期
-      } else { // token 有效
-        db.get('posts').find({id: postId}).then((cursor) => {
-          if (!cursor.length) {
-            return res.status(404).json({error: {code: '404', message: '该文章不存在'}}) // 文章不存在
-          } else {
-            db.get('posts').remove({id: postId}).then((cursor) => {
-              return res.send('删除成功')
-            })
-          }
-        })
+  checkAuth(token).then(function (session) {
+    postModel.findOneAndDelete({id: postId}).lean().then((post) => {
+      if (!post) {
+        return res.status(404).json({error: {code: '404', message: '该文章不存在'}}) // 文章不存在
+      } else {
+        return res.send(post)
       }
     })
-  }
+  }).catch(function (error) {
+    handleError(error, res)
+  })
 })
 
 module.exports = router
