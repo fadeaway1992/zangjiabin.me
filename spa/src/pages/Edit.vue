@@ -14,7 +14,7 @@
             <p class="path" v-for="path in imagePaths" :key="path">{{path}}</p>
           </div>
           <div class="submit-container flex-row-right">
-            <button class="submit" @click="post">发布</button>
+            <button class="submit" @click="post" :disabled="isposting">发布</button>
           </div>
         </div>
       </div>
@@ -36,7 +36,8 @@ export default {
       sourceCode: '',
       title: '',
       labels: '',
-      imagePaths: []
+      imagePaths: [],
+      isposting: false
     }
   },
   computed: {
@@ -77,26 +78,36 @@ export default {
   },
   methods: {
     post () {
+      if (this.isposting) return
       const blankRegExp = /^\s*$/g
       if (blankRegExp.test(this.title)) {
         window.alert('请输入标题')
       } else if (blankRegExp.test(this.sourceCode)) {
         window.alert('请输入内容')
       } else {
+        this.isposting = true
         if (this.isUpdate) { // 更新
           updateOneBlog({postId: this.$route.params.post_id, title: this.title, content: this.sourceCode}).then((res) => {
+            this.isposting = false
             console.log(res, 'res')
+            alert('编辑成功')
+            location.href = '/posts/' + res.data.id
           }).catch((err) => {
+            this.isposting = false
             if (err.response && err.response.data.error) {
               const error = err.response.data.error
               window.alert(error.message)
             }
           })
         } else { // 发布
-        const labels = this.labels === '' ? [] :this.labels.split(/\s*[,，]\s*/)
+          const labels = this.labels === '' ? [] :this.labels.split(/\s*[,，]\s*/)
           postBlog({title: this.title, content: this.sourceCode, labels}).then((res) => {
+            this.isposting = false
             console.log(res, 'res')
+            alert('发布成功')
+            location.href = '/posts/' + res.data.id
           }).catch((err) => {
+            this.isposting = false
             if (err.response && err.response.data.error) {
               const error = err.response.data.error
               window.alert(error.message)
