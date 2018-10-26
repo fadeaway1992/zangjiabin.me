@@ -24,6 +24,8 @@ window.onload = function () {
       buttonRemove.addEventListener('click', function () {
         removePost().then((res) => {
           console.log(res)
+          alert('删除成功')
+          location.href = '/'
         })
       })
     }
