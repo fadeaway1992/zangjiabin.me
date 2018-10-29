@@ -28,6 +28,29 @@
 .page-container.post-page .post-content h6 {
   margin: 0.5em 0;
 }
+.page-container.post-page .post-content ul,
+.page-container.post-page .post-content ol {
+  list-style: initial;
+  padding-inline-start: 1.5em;
+}
+.page-container.post-page .post-content ol {
+  list-style-type: decimal;
+}
+.page-container.post-page .post-content a {
+  color: #78bd86;
+  text-decoration: underline;
+}
+.page-container.post-page .post-content a:hover {
+  color: #57ad68;
+}
+.page-container.post-page .post-content code {
+  display: block;
+  background: #eff0f1;
+  padding: 0.2em 0.5em;
+  line-height: 2em;
+  word-break: break-all;
+  margin: 0.5em 0;
+}
 .page-container.post-page .post-content img {
   display: block;
   margin: 10px 0;
