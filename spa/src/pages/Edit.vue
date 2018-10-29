@@ -192,6 +192,28 @@ export default {
       h1, h2, h3, h4, h5, h6 {
         margin: 0.5em 0;
       }
+      ul, ol {
+        list-style: initial;
+        padding-inline-start: 1.5em;
+      }
+      ol {
+        list-style-type: decimal;
+      }
+      a {
+        color: #78bd86;
+        text-decoration: underline;
+        &:hover {
+          color: #57ad68;
+        }
+      }
+      code {
+        display: block;
+        background: #eff0f1;
+        padding: 0.2em 0.5em;
+        line-height: 2em;
+        word-break: break-all;
+        margin: 0.5em 0;
+      }
       img {
         display: block;
         margin: 10px 0;
