@@ -1,4 +1,8 @@
 const uuidv1 = require('uuid/v1')
+const xmlbuilder = require('xmlbuilder')
+const path = require('path')
+const fs = require('fs')
+const axios = require('axios')
 
 function generateExpiry (days) {
   const now = new Date()
@@ -24,4 +28,18 @@ const transformDateObjectToCommonTimeString = function (DateObject) {
   return YEAR + '年' + MONTH + '月' + DATE + '日'
 }
 
-module.exports = {generateNewSession, generateExpiry, transformDateObjectToCommonTimeString}
+const generateSitemap = function (posts) {
+  const sitemapPath = path.join(__dirname, '../root/sitemap.xml')
+  const mainPath = 'https://zangjiabin.com/'
+  const root = xmlbuilder.create('urlset', {version: '1.0', encoding: 'UTF-8'}).att('xmlns', 'http://www.sitemaps.org/schemas/sitemap/0.9');
+  posts.forEach((post) => {
+    root.ele('url').ele('loc', mainPath + post.id).insertAfter('priority', 0.6);
+  })
+  fs.writeFileSync(sitemapPath, root.end({pretty: true}), function(err) {
+    if (err) {
+      console.log(err);
+    }
+    axios.get('http://www.google.com/ping?sitemap=https://zangjiabin.me/sitemap.xml')
+  })
+}
+module.exports = {generateNewSession, generateExpiry, transformDateObjectToCommonTimeString, generateSitemap}

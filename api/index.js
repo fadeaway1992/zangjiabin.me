@@ -24,6 +24,15 @@ const sessionModel = require('../model/session.js')
 const userModel = require('../model/user.js')
 const postModel = require('../model/post.js')
 
+// generate new sitemap
+const generateSitemap = require('../utils/utils.js').generateSitemap
+
+function generateNewSitemap () {
+  postModel.find({}).lean().then(function (posts) {
+    generateSitemap(posts)
+  })
+}
+
 /* 鉴权 */
 function checkAuth (token) {
   return new Promise(async function (resolve, reject) {
@@ -184,6 +193,7 @@ router.post('/post', function (req, res) {
       if (err) {
         return handleError(error, res)
       }
+      generateNewSitemap()
       return res.send(newPost)
     })
   }).catch(function(error){
@@ -211,6 +221,7 @@ router.put('/post/:postId', function(req, res) {
       if (!post) {
         return res.status(404).json({error: {code: '404', message: '该文章不存在'}}) // 文章不存在
       } else {
+        generateNewSitemap()
         return res.send(post)
       }
     })
@@ -227,6 +238,7 @@ router.delete('/post/:postId', function(req, res) {
       if (!post) {
         return res.status(404).json({error: {code: '404', message: '该文章不存在'}}) // 文章不存在
       } else {
+        generateNewSitemap()
         return res.send(post)
       }
     })
