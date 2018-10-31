@@ -50,6 +50,7 @@ app.use('/static', express.static(path.join(__dirname, 'spa/dist/static')))
 app.use('/public', express.static(path.join(__dirname, 'public')))
 app.use('/images', express.static(path.join(__dirname, '..', 'images')))
 app.use(express.static(path.join(__dirname, 'favicon_package')))
+app.use(express.static(path.join(__dirname, 'root')))
 
 
 // 分配路由
