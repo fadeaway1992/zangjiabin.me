@@ -30,7 +30,7 @@ const transformDateObjectToCommonTimeString = function (DateObject) {
 
 const generateSitemap = function (posts) {
   const sitemapPath = path.join(__dirname, '../root/sitemap.xml')
-  const mainPath = 'https://zangjiabin.com/'
+  const mainPath = 'https://zangjiabin.com/posts/'
   const root = xmlbuilder.create('urlset', {version: '1.0', encoding: 'UTF-8'}).att('xmlns', 'http://www.sitemaps.org/schemas/sitemap/0.9');
   posts.forEach((post) => {
     root.ele('url').ele('loc', mainPath + post.id).insertAfter('priority', 0.6);
