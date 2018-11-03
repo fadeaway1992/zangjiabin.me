@@ -37,7 +37,7 @@ const generateSitemap = function (posts) {
   })
   fs.writeFileSync(sitemapPath, root.end({pretty: true}), function(err) {
     if (err) {
-      console.log(err);
+      console.log(err);  
     }
     axios.get('http://www.google.com/ping?sitemap=https://zangjiabin.me/sitemap.xml')
   })
