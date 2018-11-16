@@ -5,7 +5,8 @@
   "scripts": {
     "start": "nodemon  --watch . ./bin/www",
     "dev": "webpack-dev-server --inline --progress --hot --config spa/build/webpack.dev.conf.js",
-    "build": "node spa/build/build.js"
+    "build": "node spa/build/build.js",
+    "profile": "node profile/build.js"
   },
   "dependencies": {
     "axios": "^0.18.0",
@@ -59,6 +60,7 @@
     "postcss-import": "^11.0.0",
     "postcss-loader": "^2.0.8",
     "postcss-url": "^7.2.1",
+    "raw-loader": "^0.5.1",
     "rimraf": "^2.6.0",
     "semver": "^5.3.0",
     "shelljs": "^0.7.6",

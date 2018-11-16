@@ -1,0 +1,20 @@
+.type-container {
+  height: 200px;
+  overflow: auto;
+}
+.type-container::after {
+  content: "\00a0";
+  display: inline;
+  background: #000;
+  font-size: 0.8em;
+  animation: blink 3s infinite steps(1, start);
+}
+/*这里设置动画blink*/
+@keyframes blink {
+  0%, 100%, 20% {
+      background-color: #000;
+  }
+  10% {
+      background-color: transparent; /* not #aaa because it's seem there is Google Chrome bug */
+  }
+}
