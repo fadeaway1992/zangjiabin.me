@@ -4,7 +4,10 @@ const typer = new Typer({interval: 0.2})
 const typeContainer = document.querySelector('.type-container')
 typer.type(typeContainer, text)
 
-var data = [
+const drawChart = () => {
+
+}
+const data = [
   {key: 'HTML5', value: 8},
   {key: 'CSS3', value: 8},
   {key: 'JavaScript', value: 9},
@@ -19,23 +22,23 @@ var data = [
   {key: 'Git', value: 8}
 ]
 
-var height = 400;
-var width = 600;
+const height = 400;
+const width = 600;
 
-var xScale = d3.scaleLinear()
+const xScale = d3.scaleLinear()
   .domain([0, 10])
   .range([0, width]);
 
-var yScale = d3.scaleBand()
+const yScale = d3.scaleBand()
   .domain(data.map(function (d) {return d.key}))
   .range([0, height])
   .paddingInner(0.5)
 
-var svg = d3.select(".chart")
+const svg = d3.select(".chart")
   .style('width', width + 'px')
   .style('height', height + 'px');
 
-var bar = svg.selectAll('g')
+const bar = svg.selectAll('g')
   .data(data)
   .enter()
   .append('g')
@@ -44,44 +47,44 @@ bar.append('rect')
   .attr('class', 'bar')
   .attr('rx', '1%')
   .attr('ry', '1%')
-  .attr("x", function (d, i) {
+  .attr("x", (d, i) => {
     return 0;
   })
-  .attr("y", function (d, i) {
+  .attr("y", (d, i) => {
     return yScale(d.key);
   })
-  .attr("height", function (d, i) {
+  .attr("height", (d, i) => {
     return yScale.bandwidth()
   })
-  .attr("fill", function (d, i) {
+  .attr("fill", (d, i) => {
     return 'rgb(256, ' + Math.round(i / 2) + ', ' + i + ')'
   })
   .attr("width", 0)
   .transition()
   .duration(800)
-  .delay(function (d, i) {
+  .delay((d, i) => {
     return i * 800;
   })
-  .attr("x", function (d, i) {
+  .attr("x", (d, i) => {
     return 0;
   })
-  .attr("width", function (d, i) {
+  .attr("width", (d, i) => {
     return xScale(d.value);
   });
   
 bar.append('text')
   .attr('class', 'text')
-  .attr('x', function (d, i) {
+  .attr('x', (d, i) => {
     return xScale(d.value);
   })
-  .attr('y', function (d, i) {
+  .attr('y', (d, i) => {
     return yScale(d.key)
   })
   .style('opacity', 0)
-  .text(function (d) {return d.key})
+  .text((d) => {return d.key})
   .transition()
   .duration(800)
-  .delay(function (d, i) {
+  .delay((d, i) => {
     return i * 800;
   })
   .style('opacity', 1)

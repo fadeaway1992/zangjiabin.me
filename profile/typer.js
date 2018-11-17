@@ -18,12 +18,14 @@ class Typer {
   }
 
   async type (element, text, index = 0) {
-    element.style.whiteSpace = 'pre'
+    element.style.whiteSpace = 'pre-wrap'
     let chars
     let multi = false
     const multiType = /\[(.*?)(delay(\d+))?\]/
     const deleteChars = /\[-(\d+)(delay(\d+))?\]/
     let customDelay = false
+
+    if (!this.fullText) this.fullText = element.innerHTML
 
     if (/\[/.test(text.charAt(index))) {
       chars = text.slice(index).match(multiType)[0]

@@ -1,18 +1,41 @@
-.type-container {
-  height: 200px;
+.page-container {
+  width: 960px;
+  margin: 0 auto;
+}
+.shell {
+  min-height: 400px;
   overflow: auto;
+  width: 400px;
+
+  background: #212F3D;
+  border-radius: 4px;
+  box-shadow: 5px 3px 10px black;
+}
+.top-bar {
+  height: 20px;
+  background: #E5E8E8;
+  line-height: 20px;
+  padding-left: 5px;
+  font-size: 12px;
+  color: #839192;
+}
+.type-container {
+  color: #fff;
+  padding: 5px;
+  line-height: 1.5em;
+  font-size: 0.8em;
 }
 .type-container::after {
   content: "\00a0";
   display: inline;
-  background: #000;
+  background: #fff;
   font-size: 0.8em;
   animation: blink 3s infinite steps(1, start);
 }
 /*这里设置动画blink*/
 @keyframes blink {
   0%, 100%, 20% {
-      background-color: #000;
+      background-color: #fff;
   }
   10% {
       background-color: transparent; /* not #aaa because it's seem there is Google Chrome bug */

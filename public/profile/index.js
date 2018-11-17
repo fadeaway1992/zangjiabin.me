@@ -754,6 +754,7 @@ var typer = new _typer2.default({ interval: 0.2 });
 var typeContainer = document.querySelector('.type-container');
 typer.type(typeContainer, text);
 
+var drawChart = function drawChart() {};
 var data = [{ key: 'HTML5', value: 8 }, { key: 'CSS3', value: 8 }, { key: 'JavaScript', value: 9 }, { key: 'Vue.js', value: 8 }, { key: 'Webpack', value: 5 }, { key: 'Babel', value: 7 }, { key: 'Node.js', value: 5 }, { key: 'MongoDB', value: 6 }, { key: 'HTTP', value: 7 }, { key: 'Express', value: 5 }, { key: 'Linux', value: 6 }, { key: 'Git', value: 8 }];
 
 var height = 400;
@@ -867,13 +868,15 @@ var Typer = function () {
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
-                element.style.whiteSpace = 'pre';
+                element.style.whiteSpace = 'pre-wrap';
                 chars = void 0;
                 multi = false;
                 multiType = /\[(.*?)(delay(\d+))?\]/;
                 deleteChars = /\[-(\d+)(delay(\d+))?\]/;
                 customDelay = false;
 
+
+                if (!this.fullText) this.fullText = element.innerHTML;
 
                 if (/\[/.test(text.charAt(index))) {
                   chars = text.slice(index).match(multiType)[0];
@@ -919,28 +922,28 @@ var Typer = function () {
                   }
                 }
 
-              case 13:
-                _context.next = 15;
+              case 14:
+                _context.next = 16;
                 return this.delay(thisInterval);
 
-              case 15:
+              case 16:
                 if (this.paused) {
-                  _context.next = 13;
+                  _context.next = 14;
                   break;
                 }
 
-              case 16:
+              case 17:
 
                 index += chars.length;
 
                 if (!(index < text.length)) {
-                  _context.next = 19;
+                  _context.next = 20;
                   break;
                 }
 
                 return _context.abrupt('return', this.type(element, text, index));
 
-              case 19:
+              case 20:
               case 'end':
                 return _context.stop();
             }
