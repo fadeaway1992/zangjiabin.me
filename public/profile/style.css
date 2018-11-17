@@ -18,3 +18,27 @@
       background-color: transparent; /* not #aaa because it's seem there is Google Chrome bug */
   }
 }
+
+.chart {
+  height: 400px;
+  width: 600px;
+  overflow: visible;
+}
+.chart text {
+  fill: #000;
+  font: 10px sans-serif;
+}
+.axis text {
+  font: 10px sans-serif;
+}
+
+.axis path,
+.axis line {
+  fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges;
+  display: none;
+}
+.y.axis path {
+  fill: #000;
+}
