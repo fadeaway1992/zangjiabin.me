@@ -750,9 +750,13 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 var text = __webpack_require__(82);
 
-var typer = new _typer2.default({ interval: 0.2 });
+var typer = new _typer2.default({ interval: 0.15 });
 var typeContainer = document.querySelector('.type-container');
-typer.type(typeContainer, text);
+window.setTimeout(function () {
+  typer.type(typeContainer, text).then(function (res) {
+    console.log('over');
+  });
+}, 5000);
 
 var drawChart = function drawChart() {};
 var data = [{ key: 'HTML5', value: 8 }, { key: 'CSS3', value: 8 }, { key: 'JavaScript', value: 9 }, { key: 'Vue.js', value: 8 }, { key: 'Webpack', value: 5 }, { key: 'Babel', value: 7 }, { key: 'Node.js', value: 5 }, { key: 'MongoDB', value: 6 }, { key: 'HTTP', value: 7 }, { key: 'Express', value: 5 }, { key: 'Linux', value: 6 }, { key: 'Git', value: 8 }];
@@ -861,14 +865,75 @@ var Typer = function () {
   }, {
     key: 'type',
     value: function () {
-      var _ref2 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee(element, text) {
+      var _ref2 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee2(element, text) {
+        var _this = this;
+
         var index = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 0;
-        var chars, multi, multiType, deleteChars, customDelay, deleteArray, thisInterval, thisSlice;
-        return _regenerator2.default.wrap(function _callee$(_context) {
+        return _regenerator2.default.wrap(function _callee2$(_context2) {
           while (1) {
-            switch (_context.prev = _context.next) {
+            switch (_context2.prev = _context2.next) {
               case 0:
-                element.style.whiteSpace = 'pre-wrap';
+                return _context2.abrupt('return', new _promise2.default(function () {
+                  var _ref3 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee(resolve, reject) {
+                    return _regenerator2.default.wrap(function _callee$(_context) {
+                      while (1) {
+                        switch (_context.prev = _context.next) {
+                          case 0:
+                            element.style.whiteSpace = 'pre-wrap';
+
+                          case 1:
+                            if (!(index < text.length)) {
+                              _context.next = 7;
+                              break;
+                            }
+
+                            _context.next = 4;
+                            return _this.writeChars(element, text, index);
+
+                          case 4:
+                            index = _context.sent;
+                            _context.next = 1;
+                            break;
+
+                          case 7:
+                            resolve();
+
+                          case 8:
+                          case 'end':
+                            return _context.stop();
+                        }
+                      }
+                    }, _callee, _this);
+                  }));
+
+                  return function (_x4, _x5) {
+                    return _ref3.apply(this, arguments);
+                  };
+                }()));
+
+              case 1:
+              case 'end':
+                return _context2.stop();
+            }
+          }
+        }, _callee2, this);
+      }));
+
+      function type(_x, _x2) {
+        return _ref2.apply(this, arguments);
+      }
+
+      return type;
+    }()
+  }, {
+    key: 'writeChars',
+    value: function () {
+      var _ref4 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee3(element, text, index) {
+        var chars, multi, multiType, deleteChars, customDelay, deleteArray, thisInterval, thisSlice;
+        return _regenerator2.default.wrap(function _callee3$(_context3) {
+          while (1) {
+            switch (_context3.prev = _context3.next) {
+              case 0:
                 chars = void 0;
                 multi = false;
                 multiType = /\[(.*?)(delay(\d+))?\]/;
@@ -922,40 +987,34 @@ var Typer = function () {
                   }
                 }
 
-              case 14:
-                _context.next = 16;
+              case 13:
+                _context3.next = 15;
                 return this.delay(thisInterval);
 
-              case 16:
+              case 15:
                 if (this.paused) {
-                  _context.next = 14;
+                  _context3.next = 13;
                   break;
                 }
 
-              case 17:
+              case 16:
 
                 index += chars.length;
+                return _context3.abrupt('return', index);
 
-                if (!(index < text.length)) {
-                  _context.next = 20;
-                  break;
-                }
-
-                return _context.abrupt('return', this.type(element, text, index));
-
-              case 20:
+              case 18:
               case 'end':
-                return _context.stop();
+                return _context3.stop();
             }
           }
-        }, _callee, this);
+        }, _callee3, this);
       }));
 
-      function type(_x, _x2) {
-        return _ref2.apply(this, arguments);
+      function writeChars(_x6, _x7, _x8) {
+        return _ref4.apply(this, arguments);
       }
 
-      return type;
+      return writeChars;
     }()
   }, {
     key: 'pauseOrResume',
@@ -2870,7 +2929,7 @@ $export($export.S + $export.F * !__webpack_require__(5), 'Object', { definePrope
 /* 82 */
 /***/ (function(module, exports) {
 
-module.exports = "你好，我是臧甲彬。\n我是一名有两年工作经验的互联网前端程序员，目前正在寻找一份远程工作。"
+module.exports = "你好，我是臧甲彬。92年的大帅哥[delay1][-3delay2]老男人。\n我是一名有两年工作经验的互联网前端程序员，目前正在寻找一份远程工作。\n如果你在寻找一位技术扎实，有责任心，善于沟通，热爱学习[delay3][-19delay2]善于使用 [JavaScript] 的程序员...\n\n[delay3]Try me!!![delay3]\n\n\n\n\n\n\n\n\n我曾经在北京多点科技就职，担任前端开发工程师。"
 
 /***/ })
 /******/ ]);

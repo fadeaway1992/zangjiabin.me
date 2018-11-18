@@ -1,8 +1,13 @@
 const text = require('./text.txt')
 import Typer from './typer.js'
-const typer = new Typer({interval: 0.2})
+const typer = new Typer({interval: 0.15})
 const typeContainer = document.querySelector('.type-container')
-typer.type(typeContainer, text)
+window.setTimeout(() => {
+  typer.type(typeContainer, text).then((res) => {
+    console.log('over')
+  })
+}, 5000)
+
 
 const drawChart = () => {
 

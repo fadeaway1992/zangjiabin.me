@@ -18,7 +18,16 @@ class Typer {
   }
 
   async type (element, text, index = 0) {
-    element.style.whiteSpace = 'pre-wrap'
+    return new Promise(async (resolve, reject) => {
+      element.style.whiteSpace = 'pre-wrap'
+      while (index < text.length) {
+        index = await this.writeChars(element, text, index)
+      }
+      resolve()
+    })
+  }
+
+  async writeChars (element, text, index) {
     let chars
     let multi = false
     const multiType = /\[(.*?)(delay(\d+))?\]/
@@ -74,9 +83,7 @@ class Typer {
     } while(this.paused)
 
     index += chars.length
-    if (index < text.length) {
-      return this.type(element, text, index)
-    }
+    return index
   }
 
   pauseOrResume () {
