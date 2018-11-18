@@ -3,7 +3,7 @@ const path = require('path')
 
 module.exports = {
   context: path.resolve(__dirname, '../'),
-  entry: ['core-js/fn/promise', './profile/app.js'],
+  entry: ['@babel/polyfill', './profile/app.js'],
   output: {
     path: path.resolve(__dirname, '../public/profile/'),
     filename: 'index.js'
