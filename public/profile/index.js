@@ -8544,8 +8544,12 @@ window.setTimeout(function () {
 var drawChart = function drawChart() {
   var data = [{ key: 'CSS3', value: 8 }, { key: 'JavaScript', value: 9 }, { key: 'Vue.js', value: 7 }, { key: 'Webpack', value: 5 }, { key: 'Babel', value: 4 }, { key: 'Node.js', value: 4 }, { key: 'MongoDB', value: 5 }, { key: 'HTTP', value: 7 }, { key: 'Express', value: 5 }, { key: 'Linux', value: 3 }, { key: 'Git', value: 6 }];
 
-  var height = 400;
-  var width = 600;
+  var height = 380;
+  var width = 400;
+
+  if (window.innerWidth <= 600) {
+    width = window.innerWidth - 50;
+  }
 
   var xScale = d3.scaleLinear().domain([0, 10]).range([0, width]);
 

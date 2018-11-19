@@ -25,8 +25,12 @@ const drawChart = () => {
     {key: 'Git', value: 6}
   ]
   
-  const height = 400;
-  const width = 600;
+  let height = 380;
+  let width = 400;
+
+  if (window.innerWidth <= 600) {
+    width = window.innerWidth - 50
+  }
   
   const xScale = d3.scaleLinear()
     .domain([0, 10])
