@@ -5,6 +5,7 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var indexRouter = require('./routes/index');
 var postsRouter = require('./routes/post');
+var profileRouter = require('./routes/profile')
 var bodyParser = require('body-parser')
 var APIs = require('./api/index')
 
@@ -58,6 +59,8 @@ app.use(express.static(path.join(__dirname, 'root')))
 app.use('/posts', postsRouter);
 // api
 app.use('/api/v1', APIs)
+// profile
+app.use('/profile', profileRouter)
 // spa
 app.use('/', indexRouter);
 
