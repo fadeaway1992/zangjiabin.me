@@ -1,12 +1,13 @@
-const text = require('./text.txt')
+const text1 = require('./text1.txt')
+const text2 = require('./text2.txt')
 import Typer from './typer.js'
-const typer = new Typer({interval: 0.15})
+const typer = new Typer({interval: 0.1})
 const typeContainer = document.querySelector('.type-container')
 window.setTimeout(() => {
-  typer.type(typeContainer, text).then((res) => {
+  typer.type(typeContainer, text1).then((res) => {
     drawChart()
   })
-}, 5000)
+}, 7000)
 
 
 const drawChart = () => {
@@ -77,7 +78,12 @@ const drawChart = () => {
     })
     .attr("width", (d, i) => {
       return xScale(d.value);
-    });
+    })
+    .on('end', (d, i) => {
+      if (i === data.length - 1) {
+        typer.type(typeContainer, text2)
+      }
+    })
     
   bar.append('text')
     .attr('class', 'text')

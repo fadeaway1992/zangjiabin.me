@@ -8530,15 +8530,16 @@ var _typer2 = _interopRequireDefault(_typer);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var text = __webpack_require__(359);
+var text1 = __webpack_require__(359);
+var text2 = __webpack_require__(360);
 
-var typer = new _typer2.default({ interval: 0.15 });
+var typer = new _typer2.default({ interval: 0.1 });
 var typeContainer = document.querySelector('.type-container');
 window.setTimeout(function () {
-  typer.type(typeContainer, text).then(function (res) {
+  typer.type(typeContainer, text1).then(function (res) {
     drawChart();
   });
-}, 5000);
+}, 7000);
 
 var drawChart = function drawChart() {
   var data = [{ key: 'CSS3', value: 8 }, { key: 'JavaScript', value: 9 }, { key: 'Vue.js', value: 7 }, { key: 'Webpack', value: 5 }, { key: 'Babel', value: 4 }, { key: 'Node.js', value: 4 }, { key: 'MongoDB', value: 5 }, { key: 'HTTP', value: 7 }, { key: 'Express', value: 5 }, { key: 'Linux', value: 3 }, { key: 'Git', value: 6 }];
@@ -8572,6 +8573,10 @@ var drawChart = function drawChart() {
     return 0;
   }).attr("width", function (d, i) {
     return xScale(d.value);
+  }).on('end', function (d, i) {
+    if (i === data.length - 1) {
+      typer.type(typeContainer, text2);
+    }
   });
 
   bar.append('text').attr('class', 'text').attr('x', function (d, i) {
@@ -9981,7 +9986,13 @@ $export($export.S + $export.F * !__webpack_require__(48), 'Object', { defineProp
 /* 359 */
 /***/ (function(module, exports) {
 
-module.exports = "你好，我是臧甲彬。92年的大帅哥[delay1][-3delay2]老男人。\n我是一名有两年工作经验的互联网前端程序员，目前正在寻找一份远程工作。\n如果你在寻找一位技术扎实，有责任心，善于沟通，热爱学习[delay3][-19delay2]善于使用 [JavaScript] 的程序员...\n\n[delay3]Try me!!![delay3]\n\n\n\n\n\n\n\n\n我曾经在北京多点科技就职，担任前端开发工程师。\n我的技术栈如图"
+module.exports = "你好，我是臧甲彬。92年的大帅哥[delay1][-3delay2]老男人。\n我是一名有两年工作经验的互联网前端程序员，目前正在寻找一份远程工作。\n如果你在寻找一位技术扎实，有责任心，善于沟通，热爱学习[delay3][-19delay2]善于使用 [JavaScript] 的程序员[.][.][.]\n\n[delay3]Try me[!][!][!][delay3]\n\n\n\n\n\n\n\n\n我曾经在北京多点科技就职，担任前端开发工程师。\n我的技术栈如图[delay2]\n"
+
+/***/ }),
+/* 360 */
+/***/ (function(module, exports) {
+
+module.exports = "欢迎联系我！\n[<a href=\"mailto:zangjiabin1992@gamil.com\">zangjiabin1992@gamil.com</a>]\n17661695895"
 
 /***/ })
 /******/ ]);
