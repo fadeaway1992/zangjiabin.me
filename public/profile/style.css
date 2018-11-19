@@ -7,6 +7,7 @@ body {
   padding: 20px;
   box-sizing: border-box;
   margin: 0;
+  font-family: "Helvetica Neue", Helvetica, Arial, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "WenQuanYi Micro Hei", sans-serif;
 }
 .detail {
   position: absolute;
@@ -128,9 +129,12 @@ body {
 .type-container {
   color: #fff;
   padding: 5px;
+  height: 380px;
+  box-sizing: border-box;
   line-height: 1.5em;
   font-size: 0.8em;
   opacity: 0;
+  overflow-y: auto; 
   animation: type-container 2s 3s forwards;
 }
 .type-container a {
@@ -167,27 +171,27 @@ body {
   background: #2E4053;
   border-radius: 5px;
   opacity: 0;
-  padding-right: 20px;
   box-shadow: 5px 3px 10px black;
 }
 .chart text {
   fill: #fff;
-  font: 10px sans-serif;
+  font-size: 10px;
 }
 .axis text {
   fill: #fff;
-  font: 10px sans-serif;
+  font-size: 10px;
 }
 
 .axis path,
 .axis line {
-  fill: none;
-  stroke: #000;
-  shape-rendering: crispEdges;
   display: none;
 }
-.y.axis path {
-  fill: #000;
+
+.axis .tick:first-of-type text {
+  text-anchor: start;
+}
+.axis .tick:last-of-type text {
+  text-anchor: end;
 }
 
 /* Background Gradient for Monochromatic Colors */

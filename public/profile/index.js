@@ -8548,7 +8548,7 @@ var drawChart = function drawChart() {
   var width = 400;
 
   if (window.innerWidth <= 600) {
-    width = window.innerWidth - 50;
+    width = window.innerWidth - 40;
   }
 
   var xScale = d3.scaleLinear().domain([0, 10]).range([0, width]);
@@ -8570,7 +8570,7 @@ var drawChart = function drawChart() {
   }).attr("height", function (d, i) {
     return yScale.bandwidth();
   }).attr("fill", function (d, i) {
-    return 'rgb(0, ' + '180, ' + 256 * (10 - d.value) / 10 + ')';
+    return 'rgb(0, ' + '180, ' + parseInt(256 * (10 - d.value) / 10) + ')';
   }).attr("width", 0).transition().duration(800).delay(function (d, i) {
     return i * 800;
   }).attr("x", function (d, i) {
@@ -8584,9 +8584,10 @@ var drawChart = function drawChart() {
   });
 
   bar.append('text').attr('class', 'text').attr('x', function (d, i) {
+    if (i === 1) return xScale(d.value) - 10;
     return xScale(d.value);
   }).attr('y', function (d, i) {
-    return yScale(d.key);
+    return yScale(d.key) - 2;
   }).style('opacity', 0).text(function (d) {
     return d.key;
   }).transition().duration(800).delay(function (d, i) {
@@ -8595,9 +8596,7 @@ var drawChart = function drawChart() {
 
   var xAxis = d3.axisBottom(xScale);
 
-  svg.append("g").attr("class", "x axis").attr("transform", "translate(0," + (height - 14) + ")").call(xAxis);
-
-  svg.append("g").attr("class", "y axis").append('path').attr('d', 'M0 0 V' + height + 'H 1 V 0 L0 0');
+  svg.append("g").attr("class", "x axis").attr("transform", "translate(0," + (height - 20) + ")").call(xAxis);
 };
 
 /***/ }),
@@ -9990,13 +9989,13 @@ $export($export.S + $export.F * !__webpack_require__(48), 'Object', { defineProp
 /* 359 */
 /***/ (function(module, exports) {
 
-module.exports = "你好，我是臧甲彬。92年的大帅哥[delay1][-3delay2]老男人。\n我是一名有两年工作经验的互联网前端程序员，目前正在寻找一份远程工作。\n如果你在寻找一位技术扎实，有责任心，善于沟通，热爱学习[delay3][-19delay2]善于使用 [JavaScript] 的程序员[.][.][.]\n\n[delay3]Try me[!][!][!][delay3]\n\n\n\n\n\n\n\n\n我曾经在北京多点科技就职，担任前端开发工程师。\n我的技术栈如图[delay2]\n"
+module.exports = "你好，我是臧甲彬。92年的小帅哥[delay1][-3delay2]老男人。\n我是一名有两年工作经验的互联网前端程序员，目前正在寻找一份远程工作。\n如果你在寻找一位技术扎实，有责任心，善于沟通，热爱学习[delay2][-5delay1][-5delay1][-5delay1][-4delay1]善于使用 [JavaScript] 的程序[员delay1][.delay1][.delay1][.delay1]\n\n[delay1]Try me[!][!][!][delay2]\n\n\n\n\n\n\n\n\n我曾经在北京多点科技就职，担任前端开发工程师。\n技术栈如图\n[delay1]"
 
 /***/ }),
 /* 360 */
 /***/ (function(module, exports) {
 
-module.exports = "欢迎联系我！\n[<a href=\"mailto:zangjiabin1992@gamil.com\">zangjiabin1992@gamil.com</a>]\n17661695895"
+module.exports = "\n[delay1]欢迎联系我！\n[<a href=\"mailto:zangjiabin1992@gamil.com\">zangjiabin1992@gamil.com</a>]\n17661695895\n[delay1]😃"
 
 /***/ })
 /******/ ]);

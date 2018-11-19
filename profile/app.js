@@ -29,7 +29,7 @@ const drawChart = () => {
   let width = 400;
 
   if (window.innerWidth <= 600) {
-    width = window.innerWidth - 50
+    width = window.innerWidth - 40
   }
   
   const xScale = d3.scaleLinear()
@@ -69,7 +69,7 @@ const drawChart = () => {
       return yScale.bandwidth()
     })
     .attr("fill", (d, i) => {
-      return 'rgb(0, ' + '180, ' + 256 * (10 - d.value) / 10 + ')'
+      return 'rgb(0, ' + '180, ' + parseInt(256 * (10 - d.value) / 10) + ')'
     })
     .attr("width", 0)
     .transition()
@@ -91,11 +91,12 @@ const drawChart = () => {
     
   bar.append('text')
     .attr('class', 'text')
-    .attr('x', (d, i) => {
-      return xScale(d.value);
+    .attr('x', function (d, i) {
+      if (i === 1) return xScale(d.value) - 10
+      return xScale(d.value)
     })
-    .attr('y', (d, i) => {
-      return yScale(d.key)
+    .attr('y', function (d, i) {
+      return (yScale(d.key) - 2)
     })
     .style('opacity', 0)
     .text((d) => {return d.key})
@@ -110,11 +111,6 @@ const drawChart = () => {
   
   svg.append("g")
     .attr("class", "x axis")
-    .attr("transform", "translate(0," + (height - 14) + ")")
-    .call(xAxis);
-  
-  svg.append("g")
-    .attr("class", "y axis")
-    .append('path')
-      .attr('d', 'M0 0 V' + height + 'H 1 V 0 L0 0')
+    .attr("transform", "translate(0," + (height - 20) + ")")
+    .call(xAxis)
 }
