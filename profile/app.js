@@ -45,6 +45,7 @@ const drawChart = () => {
   const svg = d3.select(".chart")
     .style('width', width + 'px')
     .style('height', height + 'px')
+    .style('display', 'block')
 
   svg.transition()
     .duration(1000)
