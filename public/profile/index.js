@@ -8533,6 +8533,9 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 var text1 = __webpack_require__(359);
 var text2 = __webpack_require__(360);
 
+window.onload = function () {
+  document.querySelector('.loading').style.display = 'none';
+};
 var typer = new _typer2.default({ interval: 0.1 });
 var typeContainer = document.querySelector('.type-container');
 window.setTimeout(function () {
@@ -8557,7 +8560,7 @@ var drawChart = function drawChart() {
     return d.key;
   })).range([0, height]).paddingInner(0.5).paddingOuter(0.5);
 
-  var svg = d3.select(".chart").style('width', width + 'px').style('height', height + 'px');
+  var svg = d3.select(".chart").style('width', width + 'px').style('height', height + 'px').style('display', 'block');
 
   svg.transition().duration(1000).style('opacity', 1);
 
