@@ -1,6 +1,9 @@
 const text1 = require('./text1.txt')
 const text2 = require('./text2.txt')
 import Typer from './typer.js'
+window.onload = () => {
+  document.querySelector('.loading').style.display = 'none'
+}
 const typer = new Typer({interval: 0.1})
 const typeContainer = document.querySelector('.type-container')
 window.setTimeout(() => {
@@ -45,6 +48,7 @@ const drawChart = () => {
   const svg = d3.select(".chart")
     .style('width', width + 'px')
     .style('height', height + 'px')
+    .style('display', 'block')
 
   svg.transition()
     .duration(1000)
