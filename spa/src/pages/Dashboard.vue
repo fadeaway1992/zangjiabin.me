@@ -21,11 +21,17 @@
 </template>
 
 <script>
+import { getLoginStatus } from '@/http/session.js'
 import { getBlogs } from '@/http/blog.js'
 import { markdown } from 'markdown'
 import SideNavi from '@/components/SideNavi.vue'
 export default {
   name: 'Dashboard',
+  data () {
+    return {
+      admin: false
+    }
+  },
   components: {
     SideNavi
   },
@@ -37,6 +43,14 @@ export default {
   },
   created () {
     this.getBlogs(1)
+    getLoginStatus().then((res) => {
+      if (res.data.user.role === 'admin') {
+        this.admin = true
+      }
+    }).catch((err) => {
+      console.dir(err)
+      next('/')
+    })
   },
   methods: {
     getBlogs (page) {
