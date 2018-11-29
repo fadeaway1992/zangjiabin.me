@@ -4,6 +4,7 @@
     <SideNavi/>
     <!-- 文章 -->
     <div class="posts-container">
+      <router-link v-if="admin" class="go-edit" to="/edit">发布新文章</router-link>
       <!-- 一篇文章 -->
       <div class="post-container" v-if="posts.length" v-for="post in posts" :key="post.id">
         <h2 class="post-title"><a :href="'/posts/' + post.id">{{post.title}}</a></h2><!-- 标题 -->
@@ -21,6 +22,7 @@
 </template>
 
 <script>
+import { getLoginStatus } from '@/http/session.js'
 import { getBlogs } from '@/http/blog.js'
 import { markdown } from 'markdown'
 import SideNavi from '@/components/SideNavi.vue'
@@ -32,11 +34,20 @@ export default {
   data () {
     return {
       page: 1,
-      posts: []
+      posts: [],
+      admin: false
     }
   },
   created () {
     this.getBlogs(1)
+    getLoginStatus().then((res) => {
+      if (res.data.user.role === 'admin') {
+        this.admin = true
+      }
+    }).catch((err) => {
+      console.dir(err)
+      next('/')
+    })
   },
   methods: {
     getBlogs (page) {
@@ -59,6 +70,20 @@ export default {
   margin-top: 30px;
   .posts-container {
     width: 700px;
+    .go-edit {
+      display: block;
+      height: 2em;
+      color: #fff;
+      font-size: 1.2em;
+      padding: 0.5em 0;
+      line-height: 1em;
+      box-sizing: border-box;
+      background: #78bd86;
+      text-align: center;
+      &:hover {
+        background: #57ad68;
+      }
+    }
     .post-container {
       &:not(:first-child) {margin-top: 35px;}
       .post-title {
@@ -142,6 +167,9 @@ export default {
     padding: 3vw;
     .posts-container {
       width: 100%;
+      .go-edit {
+        display: none;
+      }
       .post-container {
         .post-body {
           img {
