@@ -9992,7 +9992,7 @@ $export($export.S + $export.F * !__webpack_require__(48), 'Object', { defineProp
 /* 359 */
 /***/ (function(module, exports) {
 
-module.exports = "你好，我是臧甲彬。92年的小帅哥[delay1][-3delay2]老男人。\n我是一名有两年工作经验的互联网前端程序员，目前正在寻找一份远程工作。\n如果你在寻找一位技术扎实，有责任心，善于沟通，热爱学习[delay2][-5delay1][-5delay1][-5delay1][-4delay1]善于使用 [JavaScript] 的程序[员delay1][.delay1][.delay1][.delay1]\n\n[delay1]Try me[!][!][!][delay2]\n\n\n\n\n\n\n\n\n我曾经在北京多点科技就职，担任前端开发工程师。\n技术栈如图\n[delay1]"
+module.exports = "你好，我是臧甲彬。92年的小朋友[delay1][-3delay2]老男人🙈。\n我是一名有多年工作经验的互联网前端程序员，目前正在寻找一份前端开发工作。\n如果你在寻找一位技术扎实，有责任心，善于沟通，热爱学习[delay2][-5delay1][-5delay1][-5delay1][-4delay1]善于使用 [JavaScript] 的程序[员delay1][.delay1][.delay1][.delay1]\n\n[delay1]Try me!!![delay2]\n\n\n\n\n\n\n\n\n我曾经在北京多点科技就职，担任前端开发工程师。\n技术栈如图\n[delay1]"
 
 /***/ }),
 /* 360 */
