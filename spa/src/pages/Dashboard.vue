@@ -45,7 +45,7 @@ export default {
       }
     }).catch((err) => {
       console.dir(err)
-      next('/')
+      this.$router.replace('/')
     })
   },
   methods: {
