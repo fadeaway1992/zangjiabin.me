@@ -7,7 +7,8 @@
     "mongod": "sudo mongod --config /usr/local/etc/mongod.conf",
     "dev": "webpack-dev-server --inline --progress --hot --config spa/build/webpack.dev.conf.js",
     "build": "node spa/build/build.js",
-    "profile": "node profile/build.js"
+    "profile": "node profile/build.js",
+    "ubuntu": "forever start ./bin/www"
   },
   "dependencies": {
     "@babel/polyfill": "^7.0.0",
