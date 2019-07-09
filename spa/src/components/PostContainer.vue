@@ -5,27 +5,26 @@
     <p class="post-labels" v-if="post.labels && post.labels.length">
       <span v-for="label in post.labels" :key="label">#{{label}}&nbsp;&nbsp;</span>
     </p>
-    <div class="post-body" v-html="makeHtml(post.body)"></div><!-- 正文 -->
+    <div class="post-body" ref="postContent" v-html="makeHtml(post.body)"></div><!-- 正文 -->
     <div class="mask" v-show="mask" @click="removeMask">展开</div>
   </div>
 </template>
 
 <script>
 import showdown from 'showdown'
+import highlight from 'highlight.js'
+import 'highlight.js/styles/github.css'
 export default {
   name: 'PostContainer',
   data () {
     return {
-      mask: false
+      mask: false,
+      maxHeight: 600
     }
   },
   props: {
     post: {
       type: Object,
-      required: true
-    },
-    maxHeight: {
-      type: Number,
       required: true
     }
   },
@@ -35,6 +34,9 @@ export default {
         this.mask = true
         console.log('mask')
       }
+      this.$refs.postContent.querySelectorAll('code').forEach(code => {
+        highlight.highlightBlock(code)
+      });
     })
   },
   methods: {

@@ -8,7 +8,7 @@
       <!-- 一篇文章 -->
       <div class="post-wrapper" v-if="posts.length">
         <div class="post-container" v-for="post in posts" :key="post.id">
-          <PostContainer :post="post" :maxHeight="maxHeight" />
+          <PostContainer :post="post"/>
         </div>
       </div>
       <div class="show-more">
@@ -33,8 +33,7 @@ export default {
     return {
       page: 1,
       posts: [],
-      admin: false,
-      maxHeight: 600
+      admin: false
     }
   },
   created () {
