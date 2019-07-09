@@ -28,7 +28,8 @@ const devWebpackConfig = merge(baseWebpackConfig, {
       ],
     },
     hot: true,
-    contentBase: false, // since we use CopyWebpackPlugin.
+    // contentBase: false, // since we use CopyWebpackPlugin.
+    contentBase: path.join(__dirname, '..', '..', '..', 'devserverContentbase'), // 将 images  文件夹中的内容作为静态资源
     compress: true,
     host: HOST || config.dev.host,
     port: PORT || config.dev.port,

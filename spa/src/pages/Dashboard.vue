@@ -131,6 +131,7 @@ export default {
           line-height: 2em;
           word-break: break-all;
           margin: 0.5em 0;
+          white-space: pre;
         }
         img {
           display: block;
