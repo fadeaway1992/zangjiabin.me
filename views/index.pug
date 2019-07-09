@@ -3,11 +3,8 @@ extends layout
 block head
   link(rel='stylesheet', href='/public/reset.css')
   link(rel='stylesheet', href='/public/post.css')
-  link(rel='stylesheet', href='/public/highlight.css')
-  script(src="/public/highlight.js")
   script.
     window.postId = "#{id}"
-    hljs.initHighlightingOnLoad()
 
 block content
   div.page-container.post-page
