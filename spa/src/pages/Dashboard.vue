@@ -6,13 +6,10 @@
     <div class="posts-container">
       <router-link v-if="admin" class="go-edit" to="/edit">发布新文章</router-link>
       <!-- 一篇文章 -->
-      <div class="post-container" v-if="posts.length" v-for="post in posts" :key="post.id">
-        <h2 class="post-title"><a :href="'/posts/' + post.id">{{post.title}}</a></h2><!-- 标题 -->
-        <p class="post-time">发布于 {{post.postDate}}</p>
-        <p class="post-labels" v-if="post.labels && post.labels.length">
-          <span v-for="label in post.labels" :key="label">#{{label}}&nbsp;&nbsp;</span>
-        </p>
-        <div class="post-body" v-html="makeHtml(post.body)"></div><!-- 正文 -->
+      <div class="post-wrapper" v-if="posts.length">
+        <div class="post-container" v-for="post in posts" :key="post.id">
+          <PostContainer :post="post" :maxHeight="maxHeight" />
+        </div>
       </div>
       <div class="show-more">
         <a class="goto-indexes" href="/index">查看更多文章</a>
@@ -24,19 +21,20 @@
 <script>
 import { getLoginStatus } from '@/http/session.js'
 import { getBlogs } from '@/http/blog.js'
-import showdown from 'showdown'
-// const converter = new showdown.Converter()
+import PostContainer from '@/components/PostContainer.vue'
 import SideNavi from '@/components/SideNavi.vue'
 export default {
   name: 'Dashboard',
   components: {
-    SideNavi
+    SideNavi,
+    PostContainer
   },
   data () {
     return {
       page: 1,
       posts: [],
-      admin: false
+      admin: false,
+      maxHeight: 600
     }
   },
   created () {
@@ -56,9 +54,6 @@ export default {
         this.page = res.data.page
         this.posts = res.data.posts
       })
-    },
-    makeHtml (source) {
-      return new showdown.Converter().makeHtml(source)
     }
   }
 }
