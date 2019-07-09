@@ -12,7 +12,7 @@
         <p class="post-labels" v-if="post.labels && post.labels.length">
           <span v-for="label in post.labels" :key="label">#{{label}}&nbsp;&nbsp;</span>
         </p>
-        <div class="post-body" v-html="markdown().toHTML(post.body)"></div><!-- 正文 -->
+        <div class="post-body" v-html="makeHtml(post.body)"></div><!-- 正文 -->
       </div>
       <div class="show-more">
         <a class="goto-indexes" href="/index">查看更多文章</a>
@@ -24,7 +24,8 @@
 <script>
 import { getLoginStatus } from '@/http/session.js'
 import { getBlogs } from '@/http/blog.js'
-import { markdown } from 'markdown'
+import showdown from 'showdown'
+// const converter = new showdown.Converter()
 import SideNavi from '@/components/SideNavi.vue'
 export default {
   name: 'Dashboard',
@@ -56,8 +57,8 @@ export default {
         this.posts = res.data.posts
       })
     },
-    markdown () {
-      return markdown
+    makeHtml (source) {
+      return new showdown.Converter().makeHtml(source)
     }
   }
 }

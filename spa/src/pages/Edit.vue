@@ -27,7 +27,7 @@
 import { getLoginStatus } from '@/http/session.js'
 import { postBlog, getBlogDetail, updateOneBlog } from '@/http/blog.js'
 import { uploadImages } from '@/http/upload.js'
-import { markdown } from 'markdown'
+import showdown from 'showdown'
 import axios from 'axios'
 export default {
   name: 'Edit',
@@ -42,7 +42,7 @@ export default {
   },
   computed: {
     htmlCode () {
-      return markdown.toHTML(this.sourceCode)
+      return this.converter.makeHtml(this.sourceCode)
     }
   },
   beforeRouteEnter (to, from, next) {
@@ -58,6 +58,7 @@ export default {
     })
   },
   created () {
+    this.converter = new showdown.Converter()
     if (this.$route.params && this.$route.params.post_id) {
       this.isUpdate = true // 更新一篇文章
       const postId = this.$route.params.post_id
@@ -213,6 +214,7 @@ export default {
         line-height: 2em;
         word-break: break-all;
         margin: 0.5em 0;
+        white-space: pre;
       }
       img {
         display: block;

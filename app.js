@@ -27,7 +27,7 @@ app.use(function (req, res, next) {
   res.setHeader('Access-Control-Allow-Credentials', true);
 
   // Website you wish to allow to connect
-  res.setHeader('Access-Control-Allow-Origin', 'zangjiabin.me')
+  res.setHeader('Access-Control-Allow-Origin', '*')
 
   res.setHeader('Access-Control-Allow-Methods', '*')
 

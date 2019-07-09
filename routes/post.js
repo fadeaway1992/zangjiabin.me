@@ -1,6 +1,7 @@
 const express = require('express')
 const router = express.Router()
-const markdown = require('markdown').markdown
+const showdown = require('showdown')
+const converter = new showdown.Converter()
 const transformDateObjectToCommonTimeString = require('../utils/utils.js').transformDateObjectToCommonTimeString
 const postModel = require('../model/post.js')
 
@@ -13,7 +14,7 @@ router.get('/:post_id', function(req, res) {
         res.render('error', { message: '文章不存在', error: { status: 404} })
         return
       } else {
-        post.html = markdown.toHTML(post.body)
+        post.html = converter.makeHtml(post.body)
         post.postDate = transformDateObjectToCommonTimeString(post.postDate)
         if (post.lastModified) {
           post.lastModified = transformDateObjectToCommonTimeString(post.lastModified)
